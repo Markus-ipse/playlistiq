@@ -1,14 +1,41 @@
+// @flow
 import React from 'react';
+import type { Paging, PlaylistTrack } from './types/spotify';
 
-export function Tracks({ tracks }) {
+type Props = {
+  tracks: ?Paging<PlaylistTrack>,
+  playlistTitle: string,
+  handleBackClick: () => void;
+}
+
+const getArtist = (track: PlaylistTrack) => track.track.artists.map(a => a.name).join(', ');
+
+export function Tracks({ tracks, playlistTitle, handleBackClick }: Props) {
   if (!tracks) return <p>No tracks</p>;
+
   return (
-    <ul>
-      {tracks.items.map(track => (
-        <li key={track.track.id}>
-          {track.track.name} - {track.track.artists.map(a => a.name).join(', ')}
-        </li>
-      ))}
-    </ul>
-  )
+    <div>
+      <h2 className="title">{playlistTitle}</h2>
+      <button className="" onClick={handleBackClick}>Back to playlists</button>
+      <table className="table ps-table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Song</th>
+          <th>Artist</th>
+        </tr>
+        </thead>
+        <tbody>
+        {tracks.items.map((track, i) => (
+          <tr key={track.track.id}>
+            <td>{i + 1}</td>
+            <td title={track.track.name}>{track.track.name}</td>
+            <td title={getArtist(track)}>{getArtist(track)}</td>
+          </tr>
+        ))}
+        </tbody>
+      </table>
+      <button>Load rest of tracks</button>
+    </div>
+  );
 }

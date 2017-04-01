@@ -3,3 +3,12 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.ps-table td {
+  white-space: nowrap;
+  max-width: 45vw;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  cursor: pointer; /* Move elsewhere */
+}

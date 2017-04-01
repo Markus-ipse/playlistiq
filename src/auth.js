@@ -73,5 +73,12 @@ export function spotifyReq(url, options = {}) {
       ...options.headers
     }
   })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(res => {
+      if (res.error && res.error.status === 401) {
+        console.info(res.error);
+        localStorage.removeItem(tokenKey);
+      }
+      return res;
+    });
 }

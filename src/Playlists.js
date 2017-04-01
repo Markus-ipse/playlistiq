@@ -1,14 +1,31 @@
+// @flow
 import React from 'react';
 
-export function Playlists({ playlists, getTracks, current }) {
+import type { Paging, SimplePlaylist } from './types/spotify';
+
+type Props = {
+  playlists: ?Paging<SimplePlaylist>,
+  getTracks: (p: SimplePlaylist) => void,
+  current: ?SimplePlaylist
+}
+export function Playlists({ playlists, getTracks, current }: Props) {
   if (!playlists) return <p>No Playlists</p>;
   return (
-    <ul>
+    <table className="table ps-table">
+      <thead>
+      <tr>
+        <th>Playlist</th>
+      </tr>
+      </thead>
+      <tbody>
       {playlists.items.map(pl => (
-        <li key={pl.id} onClick={() => getTracks(pl)}>
-          {pl.name} {current && current.id === pl.id && '**'}
-        </li>
+        <tr key={pl.id} onClick={() => getTracks(pl)}>
+          <td>
+            {pl.name} {current && current.id === pl.id && '**'}
+          </td>
+        </tr>
       ))}
-    </ul>
+      </tbody>
+    </table>
   )
 }
