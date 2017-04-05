@@ -3,8 +3,8 @@ import React from 'react';
 import type { Paging, PlaylistTrack } from './types/spotify';
 
 type Props = {
-  tracks: ?Paging<PlaylistTrack>,
-  playlistTitle: string,
+  tracks: ?Paging<PlaylistTrack>;
+  playlistTitle: string;
   handleBackClick: () => void;
 }
 
@@ -12,11 +12,13 @@ const getArtist = (track: PlaylistTrack) => track.track.artists.map(a => a.name)
 
 export function Tracks({ tracks, playlistTitle, handleBackClick }: Props) {
   if (!tracks) return <p>No tracks</p>;
+  // const t: Paging<PlaylistTrack> = tracks;
+  const hasMore = tracks.next;
 
   return (
     <div>
       <h2 className="title">{playlistTitle}</h2>
-      <button className="" onClick={handleBackClick}>Back to playlists</button>
+      <button className="button" onClick={handleBackClick}>Back to playlists</button>
       <table className="table ps-table">
         <thead>
         <tr>
@@ -35,7 +37,9 @@ export function Tracks({ tracks, playlistTitle, handleBackClick }: Props) {
         ))}
         </tbody>
       </table>
-      <button>Load rest of tracks</button>
+      {hasMore &&
+      <button className="button">Load rest of tracks</button>
+      }
     </div>
   );
 }

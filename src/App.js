@@ -1,30 +1,40 @@
 // @flow
 import React, { Component } from 'react';
-import { isLoggedIn, login } from './auth';
+import { connect } from 'react-redux';
+import { login } from './auth';
 import * as Spotify from './spotifyAPI';
 import { Playlists } from './Playlists';
 import { Tracks } from './Tracks';
+import { AppState } from './reducers/index';
+import { fetchUser, receiveUser } from './actions/index';
 
+import type { Dispatch } from './actions/index';
 import type { Paging, PlaylistTrack, SimplePlaylist, User } from './types/spotify';
 
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+
+type Props = {
+  isLoggedIn: boolean;
+  user: ?User;
+  userPending: boolean;
+  dispatch: Dispatch;
+}
+
+class App extends Component<any, Props, any> {
   state: {
-    loggedIn: boolean,
     playlists: ?Paging<SimplePlaylist>,
     currentPlaylist: ?SimplePlaylist,
-    user: ?User,
     tracks: ?Paging<PlaylistTrack>
   };
 
-  constructor(props: any) {
+  props: Props;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      loggedIn: isLoggedIn(),
-      user: null,
       playlists: null,
       currentPlaylist: null,
       tracks: null
@@ -32,9 +42,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (this.state.loggedIn) {
-      Spotify.getUser()
-        .then(this.handleResponse('user'));
+    if (this.props.isLoggedIn) {
+      this.props.dispatch(fetchUser());
 
       Spotify.getUserPlaylists()
         .then(this.handleResponse('playlists'));
@@ -45,8 +54,6 @@ class App extends Component {
     return (res: any) => {
       if (res.error) {
         this.setState({
-          loggedIn: false,
-          user: null,
           playlists: null,
           currentPlaylist: null,
           tracks: null
@@ -58,7 +65,7 @@ class App extends Component {
   };
 
   getPlaylistTracks = (playlist: SimplePlaylist) => {
-    const userId = this.state.user && this.state.user.id;
+    const userId = this.props.user && this.props.user.id;
     if (!userId) return;
 
     this.setState({ currentPlaylist: playlist });
@@ -72,7 +79,8 @@ class App extends Component {
   };
 
   render() {
-    const { user, loggedIn, currentPlaylist, playlists, tracks } = this.state;
+    const { currentPlaylist, playlists, tracks } = this.state;
+    const { user, isLoggedIn } = this.props;
 
     return (
       <div className="App">
@@ -81,7 +89,7 @@ class App extends Component {
           <h2>Welcome {user && user.display_name}</h2>
         </div>
         <div className="container">
-          {!loggedIn && <button onClick={login}>Login</button>}
+          {!isLoggedIn && <button onClick={login}>Login</button>}
           {!currentPlaylist &&
           <Playlists
             playlists={playlists}
@@ -98,4 +106,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state: AppState, props) => ({
+  isLoggedIn: state.user.isLoggedIn,
+  user: state.user.data,
+  userPending: state.user.isPending
+});
+
+export default connect(mapStateToProps)(App);
