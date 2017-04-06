@@ -6,10 +6,10 @@ import * as Spotify from './spotifyAPI';
 import { Playlists } from './Playlists';
 import { Tracks } from './Tracks';
 import { AppState } from './reducers/index';
-import { fetchUser, receiveUser } from './actions/index';
+import { fetchPlaylists, fetchUser } from './actions/index';
 
-import type { Dispatch } from './actions/index';
 import type { Paging, PlaylistTrack, SimplePlaylist, User } from './types/spotify';
+import type { Dispatch } from './types/index';
 
 import logo from './logo.svg';
 import './App.css';
@@ -19,12 +19,13 @@ type Props = {
   isLoggedIn: boolean;
   user: ?User;
   userPending: boolean;
+  playlists: ?Paging<SimplePlaylist>;
+  playlistsPending: boolean;
   dispatch: Dispatch;
 }
 
 class App extends Component<any, Props, any> {
   state: {
-    playlists: ?Paging<SimplePlaylist>,
     currentPlaylist: ?SimplePlaylist,
     tracks: ?Paging<PlaylistTrack>
   };
@@ -35,7 +36,6 @@ class App extends Component<any, Props, any> {
     super(props);
 
     this.state = {
-      playlists: null,
       currentPlaylist: null,
       tracks: null
     };
@@ -44,9 +44,7 @@ class App extends Component<any, Props, any> {
   componentDidMount() {
     if (this.props.isLoggedIn) {
       this.props.dispatch(fetchUser());
-
-      Spotify.getUserPlaylists()
-        .then(this.handleResponse('playlists'));
+      this.props.dispatch(fetchPlaylists());
     }
   }
 
@@ -54,7 +52,6 @@ class App extends Component<any, Props, any> {
     return (res: any) => {
       if (res.error) {
         this.setState({
-          playlists: null,
           currentPlaylist: null,
           tracks: null
         })
@@ -79,8 +76,8 @@ class App extends Component<any, Props, any> {
   };
 
   render() {
-    const { currentPlaylist, playlists, tracks } = this.state;
-    const { user, isLoggedIn } = this.props;
+    const { currentPlaylist, tracks } = this.state;
+    const { user, isLoggedIn, playlists} = this.props;
 
     return (
       <div className="App">
@@ -109,7 +106,9 @@ class App extends Component<any, Props, any> {
 const mapStateToProps = (state: AppState, props) => ({
   isLoggedIn: state.user.isLoggedIn,
   user: state.user.data,
-  userPending: state.user.isPending
+  userPending: state.user.isPending,
+  playlists: state.playlists.data,
+  playlistsPending: state.playlists.isPending
 });
 
 export default connect(mapStateToProps)(App);

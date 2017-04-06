@@ -10,13 +10,15 @@ import App from './App';
 import appState from './reducers';
 import { isLoggedIn } from './auth';
 
+import type { Store } from './types/index';
+
 import 'bulma/css/bulma.css'
 import './index.css';
 
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+const store: Store = createStore(
   appState,
   { user: { isLoggedIn: isLoggedIn() } },
   applyMiddleware(sagaMiddleware)
