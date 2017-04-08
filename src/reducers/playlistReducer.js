@@ -1,5 +1,5 @@
 // @flow
-import type { Paging, SimplePlaylist, User } from '../types/spotify';
+import type { Paging, SimplePlaylist } from '../types/spotify';
 import type { Action } from '../actions/index';
 
 export type PlaylistState = {

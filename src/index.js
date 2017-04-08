@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { rootSaga } from './sagas';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import App from './App';
-import appState from './reducers';
+import appStateReducer from './reducers';
+import { rootSaga } from './sagas';
 import { isLoggedIn } from './auth';
 
 import type { Store } from './types/index';
@@ -18,10 +19,13 @@ import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
 
+const preloadedState = { user: { isLoggedIn: isLoggedIn() } };
+
+// $FlowFixMe
 const store: Store = createStore(
-  appState,
-  { user: { isLoggedIn: isLoggedIn() } },
-  applyMiddleware(sagaMiddleware)
+  appStateReducer,
+  preloadedState,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);

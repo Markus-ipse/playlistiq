@@ -2,14 +2,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './auth';
-import * as Spotify from './spotifyAPI';
 import { Playlists } from './Playlists';
 import { Tracks } from './Tracks';
-import { AppState } from './reducers/index';
-import { fetchPlaylists, fetchUser } from './actions/index';
+import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 
-import type { Paging, PlaylistTrack, SimplePlaylist, User } from './types/spotify';
 import type { Dispatch } from './types/index';
+import type { AppState } from './reducers/index';
+import type {
+  Paging, PlaylistTrack, SimplePlaylist, User
+} from './types/spotify';
 
 import logo from './logo.svg';
 import './App.css';
@@ -21,13 +22,13 @@ type Props = {
   userPending: boolean;
   playlists: ?Paging<SimplePlaylist>;
   playlistsPending: boolean;
+  tracks: ?Paging<PlaylistTrack>;
   dispatch: Dispatch;
 }
 
-class App extends Component<any, Props, any> {
+class App extends Component {
   state: {
     currentPlaylist: ?SimplePlaylist,
-    tracks: ?Paging<PlaylistTrack>
   };
 
   props: Props;
@@ -37,7 +38,6 @@ class App extends Component<any, Props, any> {
 
     this.state = {
       currentPlaylist: null,
-      tracks: null
     };
   }
 
@@ -48,27 +48,10 @@ class App extends Component<any, Props, any> {
     }
   }
 
-  handleResponse = (key: string) => {
-    return (res: any) => {
-      if (res.error) {
-        this.setState({
-          currentPlaylist: null,
-          tracks: null
-        })
-      } else {
-        this.setState({ [key]: res })
-      }
-    };
-  };
-
   getPlaylistTracks = (playlist: SimplePlaylist) => {
-    const userId = this.props.user && this.props.user.id;
-    if (!userId) return;
-
     this.setState({ currentPlaylist: playlist });
 
-    Spotify.getPlaylistTracks(userId, playlist.id)
-      .then(this.handleResponse('tracks'));
+    this.props.dispatch(fetchTracks(playlist))
   };
 
   handleBackClick = () => {
@@ -76,8 +59,8 @@ class App extends Component<any, Props, any> {
   };
 
   render() {
-    const { currentPlaylist, tracks } = this.state;
-    const { user, isLoggedIn, playlists} = this.props;
+    const { currentPlaylist } = this.state;
+    const { user, isLoggedIn, playlists, tracks } = this.props;
 
     return (
       <div className="App">
@@ -108,7 +91,8 @@ const mapStateToProps = (state: AppState, props) => ({
   user: state.user.data,
   userPending: state.user.isPending,
   playlists: state.playlists.data,
-  playlistsPending: state.playlists.isPending
+  playlistsPending: state.playlists.isPending,
+  tracks: state.tracks.data
 });
 
 export default connect(mapStateToProps)(App);
