@@ -2,30 +2,28 @@
 import React from "react";
 import { connect } from "react-redux";
 import type { SimplePlaylist, Track } from "./types/spotify";
-import type { AppState } from './reducers/index';
+import type { AppState } from "./reducers/index";
 import * as Select from "./reducers/selectors";
 
 type Props = {
-  tracks: Track[];
-  playlist: SimplePlaylist;
-  handleBackClick: () => void;
-  getTracks: (offset: number) => void;
-  hasMore: boolean;
-  lastOffset: number;
+  tracks: Track[],
+  playlist: SimplePlaylist,
+  handleBackClick: () => void,
+  getTracks: (offset: number) => void,
+  hasMore: boolean,
+  lastOffset: number
 };
 
 const getArtist = (track: Track) => track.artists.map(a => a.name).join(", ");
 
-export function Tracks(
-  {
-    tracks,
-    playlist,
-    handleBackClick,
-    getTracks,
-    hasMore,
-    lastOffset,
-  }: Props
-) {
+export function Tracks({
+  tracks,
+  playlist,
+  handleBackClick,
+  getTracks,
+  hasMore,
+  lastOffset
+}: Props) {
   if (!tracks) return <p>No tracks</p>;
   const nextOffset = lastOffset + 100;
 
@@ -33,10 +31,17 @@ export function Tracks(
     <div>
       <h2 className="title">{playlist.name}</h2>
       <p className="subtitle">{playlist.tracks.total} songs</p>
+
       <button className="button" onClick={handleBackClick}>
         Back to playlists
       </button>
-      <table className="table ps-table">
+
+      {hasMore &&
+        <button className="button" onClick={() => getTracks()}>
+          Fetch All tracks
+        </button>}
+
+      <table className="table is-narrow ps-table">
         <thead>
           <tr>
             <th>#</th>
@@ -68,7 +73,7 @@ const mapStateToProps = (state: AppState, props: Props) => {
     hasMore: !!playlist.next,
     lastOffset: playlist.lastOffset,
     tracks: Select.playlistTracks(state, props.playlist.id)
-  }
+  };
 };
 
 export default connect(mapStateToProps)(Tracks);

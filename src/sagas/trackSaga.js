@@ -4,11 +4,6 @@ import type { FetchTracksReqAction } from "../actions/index";
 import type { AppState } from "../reducers/index";
 
 function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
-  const cachedOffset = yield select(
-    (state: AppState) => state.tracks.pages[playlist.id][offset]
-  );
-  // console.log(cachedOffset);
-
   const res = yield call(
     Spotify.getPlaylistTracks,
     playlist.owner.id,
@@ -32,6 +27,24 @@ function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
   }
 }
 
+function* fetchTracks({ playlist, offset }: FetchTracksReqAction) {
+  if (offset != null) {
+    return yield fetchPlaylistTracks({ playlist, offset });
+  }
+
+  const cachedPl = yield select((state: AppState) => state.tracks.pages[playlist.id]);
+
+  if (cachedPl && cachedPl.next) {
+    let nextOffset = cachedPl.lastOffset || 0;
+    while ((nextOffset += 100) < cachedPl.total) {
+      yield fetchPlaylistTracks({
+        playlist,
+        offset: nextOffset
+      });
+    }
+  }
+}
+
 export function* tracksSaga() {
-  yield takeLatest("FETCH_TRACKS_REQ", fetchPlaylistTracks);
+  yield takeLatest("FETCH_TRACKS_REQ", fetchTracks);
 }

@@ -51,6 +51,7 @@ function pages(state = {}, action: Action) {
   switch (action.type) {
     case "FETCH_TRACKS_REQ": {
       const currentPl = state[action.playlist.id];
+      if (action.offset == null) return state;
 
       return {
         ...state,

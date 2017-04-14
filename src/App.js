@@ -50,14 +50,14 @@ class App extends Component {
   getPlaylistTracks = (playlist: SimplePlaylist) => {
     this.setState({ currentPlaylist: playlist });
 
-    this.props.dispatch(fetchTracks(playlist))
+    this.props.dispatch(fetchTracks(playlist, 0))
   };
 
   handleBackClick = () => {
     this.setState({ currentPlaylist: null })
   };
 
-  handleGetTracks = (offset: number) => {
+  handleGetTracks = (offset: ?number) => {
     if (this.state.currentPlaylist) {
       this.props.dispatch(fetchTracks(this.state.currentPlaylist, offset));
     }

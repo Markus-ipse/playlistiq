@@ -46,7 +46,7 @@ export const receivePlaylists = (
 
 export const fetchTracks = (
   playlist: SimplePlaylist,
-  offset: number = 0
+  offset: ?number
 ): Action => ({
   type: "FETCH_TRACKS_REQ",
   playlist,
