@@ -1,7 +1,9 @@
 // @flow
-import type { Paging, PlaylistTrack, Track } from "../types/spotify";
-import type { Action } from "../actions/index";
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
+import type { Paging, PlaylistTrack, Track } from '../types/spotify';
+import type { Action } from '../actions/index';
+import * as Select from "./selectors";
+import {shuffle} from "../util/shuffle";
 
 export type PagesState = {
   [string]: {
@@ -13,7 +15,8 @@ export type PagesState = {
     total?: number,
     next: ?string,
     lastOffset: ?number,
-    offsets: number[]
+    offsets: number[],
+    newOrder: ?string[],
   }
 };
 
@@ -24,10 +27,10 @@ export type TracksState = {
 
 function entities(state = {}, action: Action) {
   switch (action.type) {
-    case "FETCH_TRACKS_RES": {
+    case 'FETCH_TRACKS_RES': {
       const pagedTracks: Paging<PlaylistTrack> = action.pagedTracks;
       const newTracks = pagedTracks.items.reduce((idMap, item) => {
-        return { ...idMap, [item.track.id]: item.track };
+        return { ...idMap, [item.track.id]: { ...item.track, added_at: item.added_at } };
       }, {});
 
       return { ...state, ...newTracks };
@@ -47,9 +50,9 @@ const updateOffsets = (playlistPaging, offset) => {
   return [...playlistPaging.offsets, offset];
 };
 
-function pages(state = {}, action: Action) {
+function pages(state: PagesState = {}, action: Action) {
   switch (action.type) {
-    case "FETCH_TRACKS_REQ": {
+    case 'FETCH_TRACKS_REQ': {
       const currentPl = state[action.playlist.id];
       if (action.offset == null) return state;
 
@@ -67,7 +70,7 @@ function pages(state = {}, action: Action) {
       };
     }
 
-    case "FETCH_TRACKS_RES": {
+    case 'FETCH_TRACKS_RES': {
       const { total, items, offset, next } = action.pagedTracks;
       const trackIds = items.map(item => item.track.id);
 
@@ -88,6 +91,19 @@ function pages(state = {}, action: Action) {
           }
         }
       };
+    }
+
+    case 'SCRAMBLE_TRACKS': {
+      const currentPlayList = state[action.playlist.id];
+      const newOrder = shuffle(
+        currentPlayList.offsets.reduce((acc, o) => ([...acc, ...currentPlayList[o].ids]), [])
+      );
+      const newPlayList = {
+        ...currentPlayList,
+        newOrder
+      };
+
+      return { ...state, [action.playlist.id]: newPlayList };
     }
 
     default:

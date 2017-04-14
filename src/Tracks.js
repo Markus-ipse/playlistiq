@@ -4,14 +4,17 @@ import { connect } from "react-redux";
 import type { SimplePlaylist, Track } from "./types/spotify";
 import type { AppState } from "./reducers/index";
 import * as Select from "./reducers/selectors";
+import {scrambleTracks} from "./actions/index";
+import type {Dispatch} from "./types/index";
 
 type Props = {
   tracks: Track[],
   playlist: SimplePlaylist,
   handleBackClick: () => void,
-  getTracks: (offset: number) => void,
+  getTracks: (offset: ?number) => void,
   hasMore: boolean,
-  lastOffset: number
+  lastOffset: number,
+  dispatch: Dispatch
 };
 
 const getArtist = (track: Track) => track.artists.map(a => a.name).join(", ");
@@ -22,7 +25,8 @@ export function Tracks({
   handleBackClick,
   getTracks,
   hasMore,
-  lastOffset
+  lastOffset,
+  dispatch,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
   const nextOffset = lastOffset + 100;
@@ -41,20 +45,24 @@ export function Tracks({
           Fetch All tracks
         </button>}
 
+      {!hasMore && <button className="button" onClick={() => dispatch(scrambleTracks(playlist))}>Scramble</button>}
+
       <table className="table is-narrow ps-table">
         <thead>
           <tr>
             <th>#</th>
             <th>Song</th>
             <th>Artist</th>
+            <th>Added</th>
           </tr>
         </thead>
         <tbody>
           {tracks.map((track: Track, i) => (
-            <tr key={track.id}>
+            <tr key={track.id + track.add_at}>
               <td>{i + 1}</td>
               <td title={track.name}>{track.name}</td>
               <td title={getArtist(track)}>{getArtist(track)}</td>
+              <td>{track.added_at}</td>
             </tr>
           ))}
         </tbody>
