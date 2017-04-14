@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './auth';
 import { Playlists } from './Playlists';
-import { Tracks } from './Tracks';
+import Tracks from './Tracks';
 import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 
 import type { Dispatch } from './types/index';
@@ -58,6 +58,12 @@ class App extends Component {
     this.setState({ currentPlaylist: null })
   };
 
+  handleGetTracks = (offset: number) => {
+    if (this.state.currentPlaylist) {
+      this.props.dispatch(fetchTracks(this.state.currentPlaylist, offset));
+    }
+  };
+
   render() {
     const { currentPlaylist } = this.state;
     const { user, isLoggedIn, playlists, tracks } = this.props;
@@ -78,7 +84,12 @@ class App extends Component {
           />
           }
           {currentPlaylist &&
-          <Tracks tracks={tracks} playlistTitle={currentPlaylist.name} handleBackClick={this.handleBackClick} />
+          <Tracks
+            tracks={tracks}
+            playlist={currentPlaylist}
+            handleBackClick={this.handleBackClick}
+            getTracks={this.handleGetTracks}
+          />
           }
         </div>
       </div>
@@ -92,7 +103,7 @@ const mapStateToProps = (state: AppState, props) => ({
   userPending: state.user.isPending,
   playlists: state.playlists.data,
   playlistsPending: state.playlists.isPending,
-  tracks: state.tracks.data
+  tracks: Object.keys(state.tracks.entities).map(k => state.tracks.entities[k])
 });
 
 export default connect(mapStateToProps)(App);

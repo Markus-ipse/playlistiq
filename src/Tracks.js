@@ -1,45 +1,72 @@
 // @flow
-import React from 'react';
-import type { Paging, PlaylistTrack } from './types/spotify';
+import React from "react";
+import { connect } from "react-redux";
+import type { Paging, SimplePlaylist, Track } from "./types/spotify";
+import type { AppState } from './reducers/index';
 
 type Props = {
-  tracks: ?Paging<PlaylistTrack>;
-  playlistTitle: string;
+  tracks: Track[];
+  playlist: SimplePlaylist;
   handleBackClick: () => void;
-}
+  getTracks: (offset: number) => void;
+  hasMore: boolean;
+  lastOffset: number;
+};
 
-const getArtist = (track: PlaylistTrack) => track.track.artists.map(a => a.name).join(', ');
+const getArtist = (track: Track) => track.artists.map(a => a.name).join(", ");
 
-export function Tracks({ tracks, playlistTitle, handleBackClick }: Props) {
+export function Tracks(
+  {
+    tracks,
+    playlist,
+    handleBackClick,
+    getTracks,
+    hasMore,
+    lastOffset,
+  }: Props
+) {
   if (!tracks) return <p>No tracks</p>;
-  // const t: Paging<PlaylistTrack> = tracks;
-  const hasMore = tracks.next;
+  const nextOffset = lastOffset + 100;
 
   return (
     <div>
-      <h2 className="title">{playlistTitle}</h2>
-      <button className="button" onClick={handleBackClick}>Back to playlists</button>
+      <h2 className="title">{playlist.name}</h2>
+      <p className="subtitle">{playlist.tracks.total} songs</p>
+      <button className="button" onClick={handleBackClick}>
+        Back to playlists
+      </button>
       <table className="table ps-table">
         <thead>
-        <tr>
-          <th>#</th>
-          <th>Song</th>
-          <th>Artist</th>
-        </tr>
+          <tr>
+            <th>#</th>
+            <th>Song</th>
+            <th>Artist</th>
+          </tr>
         </thead>
         <tbody>
-        {tracks.items.map((track, i) => (
-          <tr key={track.track.id}>
-            <td>{i + 1}</td>
-            <td title={track.track.name}>{track.track.name}</td>
-            <td title={getArtist(track)}>{getArtist(track)}</td>
-          </tr>
-        ))}
+          {tracks.map((track, i) => (
+            <tr key={track.id}>
+              <td>{i + 1}</td>
+              <td title={track.name}>{track.name}</td>
+              <td title={getArtist(track)}>{getArtist(track)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
       {hasMore &&
-      <button className="button">Load rest of tracks</button>
-      }
+        <button className="button" onClick={() => getTracks(nextOffset)}>
+          Load more
+        </button>}
     </div>
   );
 }
+
+const mapStateToProps = (state: AppState, props: Props) => {
+  const playlist = state.tracks.pages[props.playlist.id];
+  return {
+    hasMore: !!playlist.next,
+    lastOffset: playlist.lastOffset
+  }
+};
+
+export default connect(mapStateToProps)(Tracks);

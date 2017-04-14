@@ -21,7 +21,6 @@ const sagaMiddleware = createSagaMiddleware();
 
 const preloadedState = { user: { isLoggedIn: isLoggedIn() } };
 
-// $FlowFixMe
 const store: Store = createStore(
   appStateReducer,
   preloadedState,

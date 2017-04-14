@@ -1,12 +1,19 @@
 import { call, put, takeLatest, select } from "redux-saga/effects";
 import * as Spotify from "../spotifyAPI";
 import type { FetchTracksReqAction } from "../actions/index";
+import type { AppState } from "../reducers/index";
 
-function* fetchPlaylistTracks({ playlist }: FetchTracksReqAction) {
+function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
+  const cachedOffset = yield select(
+    (state: AppState) => state.tracks.pages[playlist.id][offset]
+  );
+  console.log(cachedOffset);
+
   const res = yield call(
     Spotify.getPlaylistTracks,
     playlist.owner.id,
-    playlist.id
+    playlist.id,
+    offset
   );
 
   if (res.error) {
@@ -17,7 +24,11 @@ function* fetchPlaylistTracks({ playlist }: FetchTracksReqAction) {
       console.error("Failed to fetch tracks:", error);
     }
   } else {
-    yield put({ type: "FETCH_TRACKS_RES", pagedTracks: res });
+    yield put({
+      type: "FETCH_TRACKS_RES",
+      pagedTracks: res,
+      playlistId: playlist.id
+    });
   }
 }
 
