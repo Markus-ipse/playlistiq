@@ -7,7 +7,7 @@ function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
   const cachedOffset = yield select(
     (state: AppState) => state.tracks.pages[playlist.id][offset]
   );
-  console.log(cachedOffset);
+  // console.log(cachedOffset);
 
   const res = yield call(
     Spotify.getPlaylistTracks,

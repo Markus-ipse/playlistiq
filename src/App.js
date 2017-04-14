@@ -22,7 +22,6 @@ type Props = {
   userPending: boolean;
   playlists: ?Paging<SimplePlaylist>;
   playlistsPending: boolean;
-  tracks: ?Paging<PlaylistTrack>;
   dispatch: Dispatch;
 }
 
@@ -66,7 +65,7 @@ class App extends Component {
 
   render() {
     const { currentPlaylist } = this.state;
-    const { user, isLoggedIn, playlists, tracks } = this.props;
+    const { user, isLoggedIn, playlists } = this.props;
 
     return (
       <div className="App">
@@ -75,7 +74,7 @@ class App extends Component {
           <h2>Welcome {user && user.display_name}</h2>
         </div>
         <div className="container">
-          {!isLoggedIn && <button onClick={login}>Login</button>}
+          {!isLoggedIn && <button className="button is-primary" onClick={login}>Login</button>}
           {!currentPlaylist &&
           <Playlists
             playlists={playlists}
@@ -85,7 +84,6 @@ class App extends Component {
           }
           {currentPlaylist &&
           <Tracks
-            tracks={tracks}
             playlist={currentPlaylist}
             handleBackClick={this.handleBackClick}
             getTracks={this.handleGetTracks}
@@ -97,13 +95,12 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state: AppState, props) => ({
+const mapStateToProps = (state: AppState, props: Props) => ({
   isLoggedIn: state.user.isLoggedIn,
   user: state.user.data,
   userPending: state.user.isPending,
   playlists: state.playlists.data,
-  playlistsPending: state.playlists.isPending,
-  tracks: Object.keys(state.tracks.entities).map(k => state.tracks.entities[k])
+  playlistsPending: state.playlists.isPending
 });
 
 export default connect(mapStateToProps)(App);

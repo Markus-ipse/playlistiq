@@ -1,8 +1,9 @@
 // @flow
 import React from "react";
 import { connect } from "react-redux";
-import type { Paging, SimplePlaylist, Track } from "./types/spotify";
+import type { SimplePlaylist, Track } from "./types/spotify";
 import type { AppState } from './reducers/index';
+import * as Select from "./reducers/selectors";
 
 type Props = {
   tracks: Track[];
@@ -44,7 +45,7 @@ export function Tracks(
           </tr>
         </thead>
         <tbody>
-          {tracks.map((track, i) => (
+          {tracks.map((track: Track, i) => (
             <tr key={track.id}>
               <td>{i + 1}</td>
               <td title={track.name}>{track.name}</td>
@@ -65,7 +66,8 @@ const mapStateToProps = (state: AppState, props: Props) => {
   const playlist = state.tracks.pages[props.playlist.id];
   return {
     hasMore: !!playlist.next,
-    lastOffset: playlist.lastOffset
+    lastOffset: playlist.lastOffset,
+    tracks: Select.playlistTracks(state, props.playlist.id)
   }
 };
 
