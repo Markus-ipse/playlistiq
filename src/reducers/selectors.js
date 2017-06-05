@@ -1,20 +1,39 @@
 // @flow
-import type { AppState } from "./index";
+import type { AppState } from './index';
+import type { Track, User } from '../types/spotify';
+
+export type TrackWithMeta = {
+  id: number,
+  track: Track,
+  addedAt: string,
+  addedBy: User,
+};
+
+const emptyArr = [];
 
 const playlistPages = (state, playlistId) => state.tracks.pages[playlistId];
 
-export const playlistTracksIds = (state: AppState, playlistId: string) => {
+export const playlistTrackIds = (state: AppState, playlistId: string) => {
   const playlist = playlistPages(state, playlistId);
-  const tracks = playlist.offsets.map(offset => playlist[offset].ids);
 
-  return Array.prototype.concat(...tracks);
+  const tracks = playlist.tracks;
+  return tracks || emptyArr;
 };
 
-export const playlistTracks = (state: AppState, playlistId: string) => {
+export const playlistTracks = (
+  state: AppState,
+  playlistId: string,
+): TrackWithMeta[] => {
   const playlist = playlistPages(state, playlistId);
-  const trackIds = playlist.newOrder ? playlist.newOrder : playlistTracksIds(state, playlistId);
+  const trackMetas = playlist.newOrder
+    ? playlist.newOrder
+    : playlistTrackIds(state, playlistId);
 
-  return trackIds.map(
-    trackId => state.tracks.entities[trackId]
-  );
+  return trackMetas.map(item => {
+    const { trackId, ...rest } = item;
+    return {
+      ...rest,
+      track: state.tracks.entities[trackId],
+    };
+  });
 };

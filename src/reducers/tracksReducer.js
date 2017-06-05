@@ -1,28 +1,29 @@
 // @flow
 import { combineReducers } from 'redux';
-import type { Paging, PlaylistTrack, Track } from '../types/spotify';
+import type { Paging, PlaylistTrack, Track, User } from '../types/spotify';
 import type { Action } from '../actions/index';
-import * as Select from "./selectors";
-import {shuffle} from "../util/shuffle";
+import { shuffle } from '../util/shuffle';
+
+export type TrackMeta = {
+  id: number,
+  trackId: string,
+  addedAt: string,
+  addedBy: User,
+};
 
 export type PagesState = {
   [string]: {
-    [number]: {
-      offset: number,
-      ids: string[],
-      pending: boolean
-    },
-    total?: number,
+    tracks: TrackMeta[],
+    total: ?number,
     next: ?string,
     lastOffset: ?number,
-    offsets: number[],
-    newOrder: ?string[],
-  }
+    newOrder: ?TrackMeta[],
+  },
 };
 
 export type TracksState = {
   entities: { [string]: Track },
-  pages: PagesState
+  pages: PagesState,
 };
 
 function entities(state = {}, action: Action) {
@@ -30,7 +31,7 @@ function entities(state = {}, action: Action) {
     case 'FETCH_TRACKS_RES': {
       const pagedTracks: Paging<PlaylistTrack> = action.pagedTracks;
       const newTracks = pagedTracks.items.reduce((idMap, item) => {
-        return { ...idMap, [item.track.id]: { ...item.track, added_at: item.added_at } };
+        return { ...idMap, [item.track.id]: item.track };
       }, {});
 
       return { ...state, ...newTracks };
@@ -41,13 +42,17 @@ function entities(state = {}, action: Action) {
   }
 }
 
-const emptyArr = [];
-const updateOffsets = (playlistPaging, offset) => {
-  if (!playlistPaging) return emptyArr;
-  if (!playlistPaging.offsets) return emptyArr;
-  if (playlistPaging.offsets.includes(offset)) return playlistPaging.offsets;
+let idx = 0;
 
-  return [...playlistPaging.offsets, offset];
+const updateTracks = (tracks, items: PlaylistTrack[]) => {
+  return (tracks || []).concat(
+    items.map(item => ({
+      trackId: item.track.id,
+      id: idx++,
+      addedAt: item.added_at,
+      addedBy: item.added_by,
+    })),
+  );
 };
 
 function pages(state: PagesState = {}, action: Action) {
@@ -55,27 +60,21 @@ function pages(state: PagesState = {}, action: Action) {
     case 'FETCH_TRACKS_REQ': {
       const currentPl = state[action.playlist.id];
       if (action.offset == null) return state;
-
+      console.log('req', action);
       return {
         ...state,
         [action.playlist.id]: {
           ...currentPl,
-          offsets: currentPl ? currentPl.offsets : [],
-          [action.offset]: {
-            offset: action.offset,
-            ids: [],
-            pending: true
-          }
-        }
+          pending: true,
+        },
       };
     }
 
     case 'FETCH_TRACKS_RES': {
       const { total, items, offset, next } = action.pagedTracks;
-      const trackIds = items.map(item => item.track.id);
 
       const playlistPaging = state[action.playlistId];
-
+      console.log('res', action);
       return {
         ...state,
         [action.playlistId]: {
@@ -83,24 +82,18 @@ function pages(state: PagesState = {}, action: Action) {
           total,
           next,
           lastOffset: offset,
-          offsets: updateOffsets(playlistPaging, offset),
-          [offset]: {
-            offset: offset,
-            ids: trackIds,
-            pending: false
-          }
-        }
+          tracks: updateTracks(playlistPaging.tracks, items),
+          pending: false,
+        },
       };
     }
 
     case 'SCRAMBLE_TRACKS': {
       const currentPlayList = state[action.playlist.id];
-      const newOrder = shuffle(
-        currentPlayList.offsets.reduce((acc, o) => ([...acc, ...currentPlayList[o].ids]), [])
-      );
+      const newOrder = shuffle(currentPlayList.tracks);
       const newPlayList = {
         ...currentPlayList,
-        newOrder
+        newOrder,
       };
 
       return { ...state, [action.playlist.id]: newPlayList };
@@ -113,5 +106,5 @@ function pages(state: PagesState = {}, action: Action) {
 
 export const tracksReducer = combineReducers({
   entities,
-  pages
+  pages,
 });

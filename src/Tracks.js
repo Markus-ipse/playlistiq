@@ -1,23 +1,24 @@
 // @flow
-import React from "react";
-import { connect } from "react-redux";
-import type { SimplePlaylist, Track } from "./types/spotify";
-import type { AppState } from "./reducers/index";
-import * as Select from "./reducers/selectors";
-import {scrambleTracks} from "./actions/index";
-import type {Dispatch} from "./types/index";
+import React from 'react';
+import { connect } from 'react-redux';
+import type { SimplePlaylist, Track } from './types/spotify';
+import type { AppState } from './reducers/index';
+import * as Select from './reducers/selectors';
+import { scrambleTracks } from './actions/index';
+import type { Dispatch } from './types/index';
+import type { TrackWithMeta } from './reducers/selectors';
 
 type Props = {
-  tracks: Track[],
+  tracks: TrackWithMeta[],
   playlist: SimplePlaylist,
   handleBackClick: () => void,
   getTracks: (offset: ?number) => void,
   hasMore: boolean,
   lastOffset: number,
-  dispatch: Dispatch
+  dispatch: Dispatch,
 };
 
-const getArtist = (track: Track) => track.artists.map(a => a.name).join(", ");
+const getArtist = (track: Track) => track.artists.map(a => a.name).join(', ');
 
 export function Tracks({
   tracks,
@@ -45,7 +46,13 @@ export function Tracks({
           Fetch All tracks
         </button>}
 
-      {!hasMore && <button className="button" onClick={() => dispatch(scrambleTracks(playlist))}>Scramble</button>}
+      {!hasMore &&
+        <button
+          className="button"
+          onClick={() => dispatch(scrambleTracks(playlist))}
+        >
+          Scramble
+        </button>}
 
       <table className="table is-narrow ps-table">
         <thead>
@@ -57,14 +64,14 @@ export function Tracks({
           </tr>
         </thead>
         <tbody>
-          {tracks.map((track: Track, i) => (
-            <tr key={track.id + track.add_at}>
+          {tracks.map((item, i) =>
+            <tr key={item.id}>
               <td>{i + 1}</td>
-              <td title={track.name}>{track.name}</td>
-              <td title={getArtist(track)}>{getArtist(track)}</td>
-              <td>{track.added_at}</td>
-            </tr>
-          ))}
+              <td title={item.track.name}>{item.track.name}</td>
+              <td title={getArtist(item.track)}>{getArtist(item.track)}</td>
+              <td>{item.addedAt}</td>
+            </tr>,
+          )}
         </tbody>
       </table>
       {hasMore &&
@@ -80,7 +87,7 @@ const mapStateToProps = (state: AppState, props: Props) => {
   return {
     hasMore: !!playlist.next,
     lastOffset: playlist.lastOffset,
-    tracks: Select.playlistTracks(state, props.playlist.id)
+    tracks: Select.playlistTracks(state, props.playlist.id),
   };
 };
 
