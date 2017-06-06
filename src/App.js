@@ -9,7 +9,7 @@ import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 import type { Dispatch } from './types/index';
 import type { AppState } from './reducers/index';
 import type {
-  Paging, PlaylistTrack, SimplePlaylist, User
+  Paging, SimplePlaylist, User
 } from './types/spotify';
 
 import logo from './logo.svg';

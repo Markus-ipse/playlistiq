@@ -60,7 +60,7 @@ function pages(state: PagesState = {}, action: Action) {
     case 'FETCH_TRACKS_REQ': {
       const currentPl = state[action.playlist.id];
       if (action.offset == null) return state;
-      console.log('req', action);
+
       return {
         ...state,
         [action.playlist.id]: {
@@ -74,7 +74,7 @@ function pages(state: PagesState = {}, action: Action) {
       const { total, items, offset, next } = action.pagedTracks;
 
       const playlistPaging = state[action.playlistId];
-      console.log('res', action);
+
       return {
         ...state,
         [action.playlistId]: {

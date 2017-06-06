@@ -10,7 +10,7 @@ type Props = {
 export function Playlists({ playlists, getTracks }: Props) {
   if (!playlists) return <p>No Playlists</p>;
   return (
-    <table className="table is-narrow ps-table">
+    <table className="table is-narrow is-striped ps-table">
       <thead>
       <tr>
         <th>Playlist</th>

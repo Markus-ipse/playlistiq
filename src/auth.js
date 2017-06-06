@@ -1,3 +1,5 @@
+import { isDev } from './util/helpers';
+
 const stateKey = 'spotify_auth_state';
 const tokenKey = 'spotify_token';
 /**
@@ -31,7 +33,7 @@ function generateRandomString(length) {
 
 export function login() {
   const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Your client id
-  const redirect_uri = process.env.REACT_APP_REDIRECT_URI; // Your redirect uri
+  const redirect_uri = isDev() ? window.location.origin : process.env.REACT_APP_REDIRECT_URI; // Your redirect uri
   const state = generateRandomString(16);
   localStorage.setItem(stateKey, state);
   const scope = 'user-read-private user-read-email playlist-read-private';

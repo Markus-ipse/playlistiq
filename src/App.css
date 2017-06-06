@@ -27,3 +27,12 @@
     transform: rotate(360deg);
   }
 }
+
+.playlist {
+  /*display: table;*/
+}
+
+/** Utils **/
+.align-self-end {
+  align-self: flex-end !important;
+}
