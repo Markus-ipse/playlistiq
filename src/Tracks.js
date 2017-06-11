@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withHandlers, withState, compose } from 'recompose';
+import styled from 'styled-components';
 
 import * as Select from './reducers/selectors';
 import { scrambleTracks } from './actions/index';
@@ -14,6 +15,14 @@ import type { AppState } from './reducers/index';
 import type { Dispatch } from './types/index';
 import type { TrackWithMeta } from './reducers/selectors';
 
+const PlaylistCollection = styled.div`
+  @media (min-width: 1200px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+  }
+`;
+
 type Props = {
   tracks: TrackWithMeta[],
   playlist: SimplePlaylist,
@@ -25,6 +34,8 @@ type Props = {
   playlistCount: number,
   increment: () => void,
   decrement: () => void,
+  expanded: TrackWithMeta[],
+  setExpanded: any => void,
 };
 
 export function Tracks({
@@ -38,12 +49,16 @@ export function Tracks({
   playlistCount,
   increment,
   decrement,
+  expanded,
+  setExpanded,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
   const nextOffset = lastOffset + 100;
   const splitTracks = hasMore || !tracks.length
     ? [tracks]
     : chunkArray(tracks, playlistCount);
+
+  const isSplit = splitTracks.length > 1;
 
   return (
     <div>
@@ -76,11 +91,17 @@ export function Tracks({
           scramble={() => dispatch(scrambleTracks(playlist))}
         />}
 
-      <div className="playlists">
+      <PlaylistCollection>
         {splitTracks.map((trackChunk, i) =>
-          <TrackTable key={'table' + i} partNumber={i + 1} tracks={trackChunk} />,
+          <TrackTable
+            isActive={trackChunk[0] === (expanded && expanded[0])}
+            onHeaderClick={setExpanded}
+            key={'table' + i}
+            partNumber={isSplit ? i + 1 : null}
+            tracks={trackChunk}
+          />
         )}
-      </div>
+      </PlaylistCollection>
       {hasMore &&
         <button className="button" onClick={() => getTracks(nextOffset)}>
           Load more
@@ -100,10 +121,11 @@ const mapStateToProps = (state: AppState, props: Props) => {
 
 const addCounting = compose(
   withState('playlistCount', 'setCount', 1),
+  withState('expanded', 'setExpanded', null),
   withHandlers({
     increment: ({ setCount }) => () => setCount(n => n + 1),
     decrement: ({ setCount }) => () => setCount(n => n - 1),
-  }),
+  })
 );
 
 export default connect(mapStateToProps)(addCounting(Tracks));
