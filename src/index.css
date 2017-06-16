@@ -1,3 +1,16 @@
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -11,4 +24,9 @@ body {
   overflow: hidden;
 
   cursor: pointer; /* Move elsewhere */
+}
+
+/** Utils **/
+.align-self-end {
+  align-self: flex-end !important;
 }
