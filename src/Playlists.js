@@ -1,30 +1,37 @@
 // @flow
 import React from 'react';
+import { SpotifyLink } from './SpotifyLink';
 
 import type { Paging, SimplePlaylist } from './types/spotify';
+import { Icon } from './Icon';
 
 type Props = {
-  playlists: ?Paging<SimplePlaylist>;
-  getTracks: (p: SimplePlaylist) => void;
-}
+  playlists: ?Paging<SimplePlaylist>,
+  getTracks: (p: SimplePlaylist) => void,
+};
+
 export function Playlists({ playlists, getTracks }: Props) {
   if (!playlists) return <p>No Playlists</p>;
   return (
     <table className="table is-narrow is-striped ps-table">
       <thead>
-      <tr>
-        <th>Playlist</th>
-      </tr>
+        <tr>
+          <th>Playlist</th>
+          <th><Icon type="spotify" /></th>
+        </tr>
       </thead>
       <tbody>
-      {playlists.items.map(pl => (
-        <tr key={pl.id} onClick={() => getTracks(pl)}>
-          <td>
-            {pl.name}
-          </td>
-        </tr>
-      ))}
+        {playlists.items.map(pl =>
+          <tr key={pl.id} onClick={() => getTracks(pl)}>
+            <td>
+              {pl.name}
+            </td>
+            <td>
+              <SpotifyLink uri={pl.uri} />
+            </td>
+          </tr>,
+        )}
       </tbody>
     </table>
-  )
+  );
 }

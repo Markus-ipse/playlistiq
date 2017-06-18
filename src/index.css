@@ -26,6 +26,12 @@ body {
   cursor: pointer; /* Move elsewhere */
 }
 
+.ps-table td:last-child,
+.ps-table th:last-child {
+  text-align: center;
+  width: 3em;
+}
+
 /** Utils **/
 .align-self-end {
   align-self: flex-end !important;
