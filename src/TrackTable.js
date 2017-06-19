@@ -39,6 +39,13 @@ export function TrackTable({
         </div>}
       {activeOrSingle &&
         <table className="table is-narrow is-striped ps-table">
+          <colgroup>
+            <col />
+            <col />
+            <col />
+            <col style={{width: '9rem'}}/>
+            <col />
+          </colgroup>
           <thead>
             <tr>
               <th>#</th>

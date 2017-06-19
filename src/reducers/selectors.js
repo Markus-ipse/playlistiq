@@ -38,4 +38,4 @@ export const playlistTracks = (
   });
 };
 
-
+export const user = (state: AppState) => state.user.data ? state.user.data : null;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withHandlers, withState, compose } from 'recompose';
 
 import * as Select from './reducers/selectors';
-import { scrambleTracks } from './actions/index';
+import { scrambleTracks, createPlaylists } from './actions/index';
 import { ScrambleOptions } from './ScrambleOptions';
 import { TrackTable } from './TrackTable';
 import { chunkArray, getTotalPlayTime } from './util/helpers';
@@ -82,6 +82,13 @@ export function Tracks({
           scramble={() => dispatch(scrambleTracks(playlist))}
         />}
 
+      {!hasMore &&
+        <button
+          className="button is-primary"
+          onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
+        >
+          Create playlist(s)
+        </button>}
 
       {splitTracks.map((trackChunk, i) =>
         <TrackTable

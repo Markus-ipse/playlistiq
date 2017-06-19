@@ -3,7 +3,7 @@ import type { TrackWithMeta } from '../reducers/selectors';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
-export const chunkArray = <T>(arr: T[], chunks: number): Array<T[]> => {
+export const chunkArray = <T>(arr: T[], chunks: number, useChunkSize: ?boolean): Array<T[]> => {
   if (chunks < 1) {
     throw new Error(
       `Invalid chunk count (${chunks}). Must be at least 1 chunk`,
@@ -15,7 +15,7 @@ export const chunkArray = <T>(arr: T[], chunks: number): Array<T[]> => {
     );
   }
 
-  const chunkSize = arr.length / chunks;
+  const chunkSize = useChunkSize ? chunks : arr.length / chunks;
   const groups = [];
   let i;
 

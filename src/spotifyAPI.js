@@ -1,6 +1,6 @@
 // @flow
 
-import { spotifyReq } from './auth';
+import { spotifyPOST, spotifyReq } from './auth';
 import type {
   Paging,
   PlaylistTrack,
@@ -22,10 +22,24 @@ export function getPlaylistTracks(
   offset: number = 0,
 ): Promise<Paging<PlaylistTrack>> {
   return spotifyReq(
-    `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks?offset=${offset}&limit=100`,
+    `/v1/users/${userId}/playlists/${playlistId}/tracks?offset=${offset}&limit=100`,
   );
 }
 
-export function createPlaylist(userId: string) {
-  return spotifyReq(`https://api.spotify.com/v1/users/${userId}/playlists`);
+// Technically returns a full Playlist object, but the difference is not important for the time being
+export function createPlaylist(
+  userId: string,
+  name: string,
+): Promise<SimplePlaylist> {
+  return spotifyPOST(`/v1/users/${userId}/playlists`, { name });
+}
+
+export function addTracksToPlaylist(
+  userId: string,
+  playlistId: string,
+  trackURIs: string[],
+): Promise<{ snapshot_id: string }> {
+  return spotifyPOST(`/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+    uris: trackURIs,
+  });
 }
