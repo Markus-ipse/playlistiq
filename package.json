@@ -2,6 +2,7 @@
   "name": "playlist-scramblr",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Markus-ipse.github.io/spotify-playlist-scrambler",
   "dependencies": {
     "bulma": "^0.4.1",
     "date-fns": "^1.28.5",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "flow-bin": "^0.48.0",
+    "gh-pages": "^1.0.0",
     "prettier": "^1.4.2",
     "react-scripts": "^1.0.7"
   },
@@ -24,7 +26,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "flow": "flow",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
