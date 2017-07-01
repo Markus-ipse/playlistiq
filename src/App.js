@@ -47,17 +47,11 @@ class App extends Component {
   getPlaylistTracks = (playlist: SimplePlaylist) => {
     this.setState({ currentPlaylist: playlist });
 
-    this.props.dispatch(fetchTracks(playlist, 0));
+    this.props.dispatch(fetchTracks(playlist));
   };
 
   handleBackClick = () => {
     this.setState({ currentPlaylist: null });
-  };
-
-  handleGetTracks = (offset: ?number) => {
-    if (this.state.currentPlaylist) {
-      this.props.dispatch(fetchTracks(this.state.currentPlaylist, offset));
-    }
   };
 
   render() {
@@ -85,7 +79,6 @@ class App extends Component {
             <Tracks
               playlist={currentPlaylist}
               handleBackClick={this.handleBackClick}
-              getTracks={this.handleGetTracks}
             />}
         </div>
       </div>

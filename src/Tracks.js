@@ -18,9 +18,7 @@ type Props = {
   tracks: TrackWithMeta[],
   playlist: SimplePlaylist,
   handleBackClick: () => void,
-  getTracks: (offset: ?number) => void,
-  hasMore: boolean,
-  lastOffset: number,
+  isPending: boolean,
   dispatch: Dispatch,
   playlistCount: number,
   increment: () => void,
@@ -33,9 +31,7 @@ export function Tracks({
   tracks,
   playlist,
   handleBackClick,
-  getTracks,
-  hasMore,
-  lastOffset,
+  isPending,
   dispatch,
   playlistCount,
   increment,
@@ -44,8 +40,7 @@ export function Tracks({
   setExpanded,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
-  const nextOffset = lastOffset + 100;
-  const splitTracks = hasMore || !tracks.length
+  const splitTracks = isPending || !tracks.length
     ? [tracks]
     : chunkArray(tracks, playlistCount);
 
@@ -60,19 +55,14 @@ export function Tracks({
       <h2 className="title">{playlist.name}</h2>
       <p className="subtitle">
         {playlist.tracks.total} songs
-        {!hasMore &&
+        {!isPending &&
           <span>
             ,
             {getTotalPlayTime(tracks)}
           </span>}
       </p>
 
-      {hasMore &&
-        <button className="button" onClick={() => getTracks()}>
-          Fetch All tracks
-        </button>}
-
-      {!hasMore &&
+      {!isPending &&
         <ScrambleOptions
           outputCount={playlistCount}
           increment={increment}
@@ -82,7 +72,7 @@ export function Tracks({
           scramble={() => dispatch(scrambleTracks(playlist))}
         />}
 
-      {!hasMore &&
+      {!isPending &&
         <button
           className="button is-primary"
           onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
@@ -99,10 +89,6 @@ export function Tracks({
           tracks={trackChunk}
         />,
       )}
-      {hasMore &&
-        <button className="button" onClick={() => getTracks(nextOffset)}>
-          Load more
-        </button>}
     </div>
   );
 }
@@ -110,8 +96,7 @@ export function Tracks({
 const mapStateToProps = (state: AppState, props: Props) => {
   const playlist = state.tracks.pages[props.playlist.id];
   return {
-    hasMore: playlist.next !== null,
-    lastOffset: playlist.lastOffset,
+    isPending: playlist.next !== null,
     tracks: Select.playlistTracks(state, props.playlist.id),
   };
 };

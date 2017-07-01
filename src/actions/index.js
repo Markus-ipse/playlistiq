@@ -10,7 +10,6 @@ import type { TrackWithMeta } from '../reducers/selectors';
 export type FetchTracksReqAction = {
   type: 'FETCH_TRACKS_REQ',
   playlist: SimplePlaylist,
-  offset: ?number,
 };
 export type FetchTracksResAction = {
   type: 'FETCH_TRACKS_RES',
@@ -55,11 +54,9 @@ export const fetchPlaylists = (): Action => ({
 
 export const fetchTracks = (
   playlist: SimplePlaylist,
-  offset: ?number,
 ): FetchTracksReqAction => ({
   type: 'FETCH_TRACKS_REQ',
   playlist,
-  offset,
 });
 
 export const scrambleTracks = (
@@ -69,7 +66,10 @@ export const scrambleTracks = (
   playlist,
 });
 
-export const createPlaylists = (playlist: SimplePlaylist, groupedTracks: Array<TrackWithMeta[]>): CreatePlaylistsAction => ({
+export const createPlaylists = (
+  playlist: SimplePlaylist,
+  groupedTracks: Array<TrackWithMeta[]>,
+): CreatePlaylistsAction => ({
   type: 'CREATE_PLAYLISTS',
   playlist,
   groupedTracks,

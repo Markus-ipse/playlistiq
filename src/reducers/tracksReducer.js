@@ -59,13 +59,11 @@ function pages(state: PagesState = {}, action: Action) {
   switch (action.type) {
     case 'FETCH_TRACKS_REQ': {
       const currentPl = state[action.playlist.id];
-      if (action.offset == null) return state;
 
       return {
         ...state,
         [action.playlist.id]: {
           ...currentPl,
-          pending: true,
         },
       };
     }
@@ -83,7 +81,6 @@ function pages(state: PagesState = {}, action: Action) {
           next,
           lastOffset: offset,
           tracks: updateTracks(playlistPaging.tracks, items),
-          pending: false,
         },
       };
     }
