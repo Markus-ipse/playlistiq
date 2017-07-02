@@ -29,10 +29,26 @@ body {
 .ps-table td:last-child,
 .ps-table th:last-child {
   text-align: center;
-  width: 3em;
+  width: 2.3em;
 }
 
 /** Utils **/
-.align-self-end {
+
+/**** Whitespace ****/
+.ps-m {
+  margin: 1rem;
+}
+
+/***** End Whitespace ****/
+
+/***** Flex ****/
+
+.ps-align-self-end {
   align-self: flex-end !important;
 }
+
+.ps-shrink-1 {
+  flex-shrink: 1 !important;
+}
+
+/***** End Flex ****/

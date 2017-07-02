@@ -24,10 +24,10 @@ type Props = {
   increment: () => void,
   decrement: () => void,
   expanded: TrackWithMeta[],
-  setExpanded: (tracks: ?TrackWithMeta[]) => void,
+  setExpanded: (tracks: ?(TrackWithMeta[])) => void,
 };
 
-export function Tracks({
+export function PlaylistView({
   tracks,
   playlist,
   handleBackClick,
@@ -40,9 +40,8 @@ export function Tracks({
   setExpanded,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
-  const splitTracks = isPending || !tracks.length
-    ? [tracks]
-    : chunkArray(tracks, playlistCount);
+  const splitTracks =
+    isPending || !tracks.length ? [tracks] : chunkArray(tracks, playlistCount);
 
   const isSplit = splitTracks.length > 1;
 
@@ -51,35 +50,37 @@ export function Tracks({
       <button className="button" onClick={handleBackClick}>
         Back to playlists
       </button>
+      <div className="ps-m">
+        <h2 className="title">
+          {playlist.name}
+        </h2>
+        <p className="subtitle">
+          {playlist.tracks.total} songs
+          {!isPending &&
+            <span>
+              ,
+              {getTotalPlayTime(tracks)}
+            </span>}
+        </p>
 
-      <h2 className="title">{playlist.name}</h2>
-      <p className="subtitle">
-        {playlist.tracks.total} songs
         {!isPending &&
-          <span>
-            ,
-            {getTotalPlayTime(tracks)}
-          </span>}
-      </p>
+          <ScrambleOptions
+            outputCount={playlistCount}
+            increment={increment}
+            decrement={decrement}
+            min={1}
+            max={tracks.length / 5}
+            scramble={() => dispatch(scrambleTracks(playlist))}
+          />}
 
-      {!isPending &&
-        <ScrambleOptions
-          outputCount={playlistCount}
-          increment={increment}
-          decrement={decrement}
-          min={1}
-          max={tracks.length / 5}
-          scramble={() => dispatch(scrambleTracks(playlist))}
-        />}
-
-      {!isPending &&
-        <button
-          className="button is-primary"
-          onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
-        >
-          Create playlist(s)
-        </button>}
-
+        {!isPending &&
+          <button
+            className="button is-primary"
+            onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
+          >
+            Create playlist(s)
+          </button>}
+      </div>
       {splitTracks.map((trackChunk, i) =>
         <TrackTable
           isActive={trackChunk[0] === (expanded && expanded[0])}
@@ -110,4 +111,4 @@ const addCounting = compose(
   }),
 );
 
-export default connect(mapStateToProps)(addCounting(Tracks));
+export default connect(mapStateToProps)(addCounting(PlaylistView));

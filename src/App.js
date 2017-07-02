@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './auth';
 import { Playlists } from './Playlists';
-import Tracks from './Tracks';
+import Tracks from './PlaylistView';
 import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 
 import type { Dispatch } from './types/index';

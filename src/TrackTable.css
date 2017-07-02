@@ -2,3 +2,25 @@
   border: 1px solid #ddd;
   padding: 1rem;
 }
+
+.TrackTable-num-col {
+  width: 3rem;
+}
+
+.TrackTable-date-col {
+  width: 6.3rem;
+}
+
+.TrackTable-time {
+  margin-left: 0.25em;
+  display: none;
+}
+
+@media screen and (min-width: 450px) {
+  .TrackTable-date-col {
+    width: 9rem;
+  }
+  .TrackTable-time {
+    display: inline;
+  }
+}

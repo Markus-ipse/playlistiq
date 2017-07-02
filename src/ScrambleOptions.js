@@ -20,7 +20,7 @@ export function ScrambleOptions({
 }: Props) {
   return (
     <div className="field is-grouped">
-      <div className="control">
+      <div className="control ps-shrink-1">
         <label className="label" htmlFor="playlistCount">
           # of playlists to create
         </label>
@@ -30,7 +30,7 @@ export function ScrambleOptions({
           </p>
           <input
             id="playlistCount"
-            className="input"
+            className="input has-text-centered"
             type="number"
             value={outputCount}
             readOnly
@@ -40,7 +40,7 @@ export function ScrambleOptions({
           </p>
         </div>
       </div>
-      <p className="control align-self-end">
+      <p className="control ps-align-self-end">
         <button className="button is-primary" onClick={scramble}>
           Scramble
         </button>
