@@ -25,6 +25,7 @@ type Props = {
   decrement: () => void,
   expanded: TrackWithMeta[],
   setExpanded: (tracks: ?(TrackWithMeta[])) => void,
+  isScrambled: boolean,
 };
 
 export function PlaylistView({
@@ -38,12 +39,15 @@ export function PlaylistView({
   decrement,
   expanded,
   setExpanded,
+  isScrambled,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
   const splitTracks =
     isPending || !tracks.length ? [tracks] : chunkArray(tracks, playlistCount);
 
   const isSplit = splitTracks.length > 1;
+
+  const createDisabled = playlistCount === 1 && !isScrambled;
 
   return (
     <div>
@@ -73,13 +77,13 @@ export function PlaylistView({
           scramble={() => dispatch(scrambleTracks(playlist))}
         />
 
-        {!isPending &&
-          <button
-            className="button is-primary"
-            onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
-          >
-            Create playlist(s)
-          </button>}
+        <button
+          className="button is-primary"
+          disabled={isPending || createDisabled}
+          onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
+        >
+          Create playlist(s)
+        </button>
       </div>
       {splitTracks.map((trackChunk, i) =>
         <TrackTable
@@ -94,13 +98,11 @@ export function PlaylistView({
   );
 }
 
-const mapStateToProps = (state: AppState, props: Props) => {
-  const playlist = state.tracks.pages[props.playlist.id];
-  return {
-    isPending: playlist.next !== null,
-    tracks: Select.playlistTracks(state, props.playlist.id),
-  };
-};
+const mapStateToProps = (state: AppState, props: Props) => ({
+  isPending: Select.tracksPending(state, props.playlist.id),
+  tracks: Select.playlistTracks(state, props.playlist.id),
+  isScrambled: Select.isScrambled(state, props.playlist.id)
+});
 
 const addCounting = compose(
   withState('playlistCount', 'setCount', 1),
