@@ -29,6 +29,8 @@ class App extends Component {
 
   props: Props;
 
+  confirmDialog;
+
   constructor(props: Props) {
     super(props);
 
@@ -54,6 +56,10 @@ class App extends Component {
     this.setState({ currentPlaylist: null });
   };
 
+  handleLogin = () => {
+    login(this.confirmDialog.checked);
+  };
+
   render() {
     const { currentPlaylist } = this.state;
     const { user, isLoggedIn, playlists } = this.props;
@@ -68,16 +74,29 @@ class App extends Component {
         </div>
         <div className="container">
           {!isLoggedIn &&
-            <button className="button is-primary" onClick={login}>
-              Login
-            </button>}
+            <div className="ps-m">
+              <button className="button is-primary" onClick={this.handleLogin}>
+                Login
+              </button>
+              <p className="control ps-m-t">
+                <label className="checkbox">
+                  <input
+                    type="checkbox"
+                    ref={input => (this.confirmDialog = input)}
+                  />
+                  {' '} Show Spotify confirm dialog
+                </label>
+              </p>
+            </div>}
           {!currentPlaylist &&
+            isLoggedIn &&
             <Playlists
               playlists={playlists}
               current={currentPlaylist}
               getTracks={this.getPlaylistTracks}
             />}
           {currentPlaylist &&
+            isLoggedIn &&
             <Tracks
               playlist={currentPlaylist}
               handleBackClick={this.handleBackClick}

@@ -34,7 +34,7 @@ function generateRandomString(length) {
   return text;
 }
 
-export function login() {
+export function login(showDialog: boolean) {
   const client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Your client id
   const redirect_uri = isDev()
     ? window.location.origin
@@ -57,7 +57,11 @@ export function login() {
   url += '&scope=' + encodeURIComponent(scope);
   url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
   url += '&state=' + encodeURIComponent(state);
-  url += '&show_dialog=true';
+
+  if (showDialog) {
+    url += '&show_dialog=true';
+  }
+
   window.location = url;
 }
 
