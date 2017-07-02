@@ -63,15 +63,15 @@ export function PlaylistView({
             </span>}
         </p>
 
-        {!isPending &&
-          <ScrambleOptions
-            outputCount={playlistCount}
-            increment={increment}
-            decrement={decrement}
-            min={1}
-            max={tracks.length / 5}
-            scramble={() => dispatch(scrambleTracks(playlist))}
-          />}
+        <ScrambleOptions
+          disabled={isPending}
+          outputCount={playlistCount}
+          increment={increment}
+          decrement={decrement}
+          min={1}
+          max={tracks.length / 5}
+          scramble={() => dispatch(scrambleTracks(playlist))}
+        />
 
         {!isPending &&
           <button

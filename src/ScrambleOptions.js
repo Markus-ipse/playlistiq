@@ -8,6 +8,7 @@ type Props = {
   increment: () => void,
   decrement: () => void,
   scramble: () => void,
+  disabled: boolean,
 };
 
 export function ScrambleOptions({
@@ -17,6 +18,7 @@ export function ScrambleOptions({
   increment,
   decrement,
   scramble,
+  disabled,
 }: Props) {
   return (
     <div className="field is-grouped">
@@ -26,7 +28,13 @@ export function ScrambleOptions({
         </label>
         <div className="field has-addons">
           <p className="control">
-            <button className="button" disabled={outputCount <= min} onClick={decrement}>-</button>
+            <button
+              className="button"
+              disabled={disabled || outputCount <= min}
+              onClick={decrement}
+            >
+              -
+            </button>
           </p>
           <input
             id="playlistCount"
@@ -34,14 +42,25 @@ export function ScrambleOptions({
             type="number"
             value={outputCount}
             readOnly
+            disabled={disabled}
           />
           <p className="control">
-            <button className="button" disabled={outputCount >= max} onClick={increment}>+</button>
+            <button
+              className="button"
+              disabled={disabled || outputCount >= max}
+              onClick={increment}
+            >
+              +
+            </button>
           </p>
         </div>
       </div>
       <p className="control ps-align-self-end">
-        <button className="button is-primary" onClick={scramble}>
+        <button
+          disabled={disabled}
+          className="button is-primary"
+          onClick={scramble}
+        >
           Scramble
         </button>
       </p>
