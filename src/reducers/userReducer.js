@@ -3,14 +3,21 @@ import type { User } from '../types/spotify';
 import type { Action } from '../actions/index';
 
 export type UserState = {
-  isLoggedIn: boolean;
-  data: ?User;
-  isPending: boolean;
-}
+  isLoggedIn: boolean,
+  data: ?User,
+  isPending: boolean,
+};
 
-const initialState: UserState = { data: null, isPending: false, isLoggedIn: false };
+const initialState: UserState = {
+  data: null,
+  isPending: false,
+  isLoggedIn: false,
+};
 
-export default function userReducer(state: UserState = initialState, action: Action): UserState {
+export default function userReducer(
+  state: UserState = initialState,
+  action: Action,
+): UserState {
   switch (action.type) {
     case 'FETCH_USER_REQ':
       return { ...state, isPending: true };

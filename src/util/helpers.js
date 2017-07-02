@@ -3,7 +3,11 @@ import type { TrackWithMeta } from '../reducers/selectors';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
-export const chunkArray = <T>(arr: T[], chunks: number, useChunkSize: ?boolean): Array<T[]> => {
+export const chunkArray = <T>(
+  arr: T[],
+  chunks: number,
+  useChunkSize: ?boolean,
+): Array<T[]> => {
   if (chunks < 1) {
     throw new Error(
       `Invalid chunk count (${chunks}). Must be at least 1 chunk`,
@@ -32,13 +36,13 @@ export const msToFriendly = (millisec: number) => {
   let hours = 0;
   if (minutes > 59) {
     hours = Math.floor(minutes / 60);
-    minutes = minutes - (hours * 60);
+    minutes = minutes - hours * 60;
   }
 
   if (hours > 0) {
-    return hours + " hr " + minutes + " min";
+    return hours + ' hr ' + minutes + ' min';
   }
-  return minutes + " min";
+  return minutes + ' min';
 };
 
 export const getTotalPlayTime = (tracks: TrackWithMeta[]) =>

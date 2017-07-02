@@ -62,7 +62,9 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome {user && user.display_name}</h2>
+          <h2>
+            Welcome {user && user.display_name}
+          </h2>
         </div>
         <div className="container">
           {!isLoggedIn &&

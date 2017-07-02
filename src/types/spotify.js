@@ -7,14 +7,14 @@ export type Paging<T> = {
   next: string, // URL to the next page of items. (null if none)
   offset: number, // The offset of the items returned (as set in the query or by default).
   previous: string, // URL to the previous page of items. (null if none)
-  total: number // The total number of items available to return.
-}
+  total: number, // The total number of items available to return.
+};
 
 export type Image = {
   height: number, // The image height in pixels. If unknown: null or not returned.
   url: string, // The source URL of the image.
   width: number, // The image width in pixels. If unknown: null or not returned.
-}
+};
 
 export type User = {
   display_name: string, // The name displayed on the user's profile. null if not available.
@@ -25,7 +25,7 @@ export type User = {
   images: Image[], // The user's profile image.
   type: 'user', // The object type: "user"
   uri: string, // The Spotify URI for this user.
-}
+};
 
 export type SimplePlaylist = {
   collaborative: boolean, // true if the owner allows other users to modify the playlist.
@@ -40,7 +40,7 @@ export type SimplePlaylist = {
   tracks: { href: string, total: number }, // A collection containing a link (href) to the Web API endpoint where full details of the playlist's tracks can be retrieved, along with the total number of tracks in the playlist.
   type: string, // The object type: "playlist"
   uri: string, // The Spotify URI for the playlist.
-}
+};
 
 export type SimpleArtist = {
   external_urls: any, // Known external URLs for this artist.
@@ -49,7 +49,7 @@ export type SimpleArtist = {
   name: string, // The name of the artist
   type: string, // The object type: "artist"
   uri: string, // The Spotify URI for the artist.
-}
+};
 
 export type SimpleAlbum = {
   album_type: string, // The type of the album: one of "album", "single", or "compilation".
@@ -62,7 +62,7 @@ export type SimpleAlbum = {
   name: string, // The name of the album. In case of an album takedown, the value may be an empty string.
   type: string, // The object type: "album"
   uri: string, // The Spotify URI for the album.
-}
+};
 
 export type Track = {
   album: SimpleAlbum, // The album on which the track appears. The album object includes a link in href to full information about the album.
@@ -83,11 +83,11 @@ export type Track = {
   track_number: number, // The number of the track. If an album has several discs, the track number is the number on the specified disc.
   type: string, // The object type: "track".
   uri: string, // The Spotify URI for the track.
-}
+};
 
 export type PlaylistTrack = {
   added_at: string, // The date and time the track was added.Note that some very old playlists may return null in this field.
   added_by: User, // The Spotify user who added the track.Note that some very old playlists may return null in this field.
   is_local: boolean, // Whether this track is a local file or not.
   track: Track, // Information about the track.
-}
+};

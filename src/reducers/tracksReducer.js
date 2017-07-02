@@ -17,7 +17,7 @@ export type PagesState = {
     total: ?number,
     next: ?string,
     lastOffset: ?number,
-    newOrder: ?TrackMeta[],
+    newOrder: ?(TrackMeta[]),
   },
 };
 

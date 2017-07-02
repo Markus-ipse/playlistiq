@@ -49,7 +49,8 @@ export function login() {
 
   const state = generateRandomString(16);
   localStorage.setItem(stateKey, state);
-  const scope = 'user-read-private user-read-email playlist-read-private playlist-modify-public';
+  const scope =
+    'user-read-private user-read-email playlist-read-private playlist-modify-public';
   let url = 'https://accounts.spotify.com/authorize';
   url += '?response_type=token';
   url += '&client_id=' + encodeURIComponent(client_id); // flow-ignore-line
@@ -107,6 +108,6 @@ export function spotifyPOST(url: string, data: any) {
   return spotifyReq(url, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 }

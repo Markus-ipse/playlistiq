@@ -17,7 +17,9 @@ export function Playlists({ playlists, getTracks }: Props) {
       <thead>
         <tr>
           <th>Playlist</th>
-          <th><Icon type="spotify" /></th>
+          <th>
+            <Icon type="spotify" />
+          </th>
         </tr>
       </thead>
       <tbody>

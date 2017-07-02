@@ -6,5 +6,5 @@ import { tracksSaga } from './trackSaga';
 export function* rootSaga() {
   yield fork(userSaga);
   yield fork(playlistsSaga);
-  yield fork(tracksSaga)
+  yield fork(tracksSaga);
 }

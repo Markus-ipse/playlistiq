@@ -47,7 +47,7 @@ export function TrackTable({
       {activeOrSingle &&
         <table className="table is-narrow is-striped ps-table">
           <colgroup>
-            <col className="TrackTable-num-col"/>
+            <col className="TrackTable-num-col" />
             <col />
             <col />
             <col className="TrackTable-date-col" />

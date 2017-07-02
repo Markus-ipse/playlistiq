@@ -101,7 +101,7 @@ export function PlaylistView({
 const mapStateToProps = (state: AppState, props: Props) => ({
   isPending: Select.tracksPending(state, props.playlist.id),
   tracks: Select.playlistTracks(state, props.playlist.id),
-  isScrambled: Select.isScrambled(state, props.playlist.id)
+  isScrambled: Select.isScrambled(state, props.playlist.id),
 });
 
 const addCounting = compose(

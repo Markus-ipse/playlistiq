@@ -3,13 +3,16 @@ import type { Paging, SimplePlaylist } from '../types/spotify';
 import type { Action } from '../actions/index';
 
 export type PlaylistState = {
-  data: ?Paging<SimplePlaylist>;
-  isPending: boolean;
-}
+  data: ?Paging<SimplePlaylist>,
+  isPending: boolean,
+};
 
 const initialState: PlaylistState = { data: null, isPending: false };
 
-export default function playlistReducer(state: PlaylistState = initialState, action: Action): PlaylistState {
+export default function playlistReducer(
+  state: PlaylistState = initialState,
+  action: Action,
+): PlaylistState {
   switch (action.type) {
     case 'FETCH_PLAYLISTS_REQ':
       return { ...state, isPending: true };

@@ -10,15 +10,15 @@ import type { PlaylistState } from './playlistReducer';
 import type { TracksState } from './tracksReducer';
 
 export type AppState = {
-  user: UserState;
-  playlists: PlaylistState;
-  tracks: TracksState;
-}
+  user: UserState,
+  playlists: PlaylistState,
+  tracks: TracksState,
+};
 
 const appState = combineReducers({
   user: userReducer,
   playlists: playlistReducer,
-  tracks: tracksReducer
+  tracks: tracksReducer,
 });
 
 export default appState;

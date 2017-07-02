@@ -28,15 +28,14 @@ export const Icon = ({ type, size = 21 }: Props) => {
   const icon = icons[type];
   return (
     <svg
-      style={{verticalAlign: 'middle'}}
+      style={{ verticalAlign: 'middle' }}
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
       viewBox={icon.viewBox}
     >
-      <path d={icon.path} fill={icon.fill}/>
-
+      <path d={icon.path} fill={icon.fill} />
     </svg>
   );
 };
