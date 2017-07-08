@@ -3,6 +3,10 @@
   padding: 1rem;
 }
 
+.TrackTable-header.is-open {
+  border-bottom-color: transparent;
+}
+
 .TrackTable-num-col {
   width: 3rem;
 }

@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import format from 'date-fns/format';
+import classNames from 'classnames';
+import scrollIntoView from 'scroll-into-view';
 import { getTotalPlayTime } from './util/helpers';
 import { SpotifyLink } from './SpotifyLink';
 import { Icon } from './Icon';
@@ -14,7 +16,7 @@ type Props = {
   tracks: TrackWithMeta[],
   partNumber: ?number,
   isActive: boolean,
-  onHeaderClick: (tracks: ?(TrackWithMeta[])) => void,
+  onHeaderClick: (partNumber: ?number) => void,
 };
 
 const getArtist = (track: Track) => track.artists.map(a => a.name).join(', ');
@@ -29,18 +31,24 @@ export function TrackTable({
 
   const clickHandler = (e: MouseEvent) => {
     const elem = e.currentTarget;
-    console.log(elem);
     if (elem instanceof HTMLElement) {
-      console.log("I'll be damned");
-      window.setTimeout(() => elem.scrollIntoView(), 100);
+      window.setTimeout(() => scrollIntoView(elem, {
+        align: {
+          top: 0,
+        },
+      }), 100);
     }
-    onHeaderClick(isActive ? null : tracks);
+    onHeaderClick(isActive ? null : partNumber);
   };
+
+  const headerClasses = classNames('TrackTable-header', {
+    'is-open': isActive,
+  });
 
   return (
     <div className="playlist">
       {partNumber &&
-        <div className="TrackTable-header" onClick={clickHandler}>
+        <div className={headerClasses} onClick={clickHandler}>
           Pt. {partNumber} ({tracks.length} songs, {getTotalPlayTime(tracks)})
           {isActive && <strong>*</strong>}
         </div>}

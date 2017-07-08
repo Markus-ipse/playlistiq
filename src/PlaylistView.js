@@ -24,7 +24,7 @@ type Props = {
   increment: () => void,
   decrement: () => void,
   expanded: TrackWithMeta[],
-  setExpanded: (tracks: ?(TrackWithMeta[])) => void,
+  setExpanded: (partNumber: ?number) => void,
   isScrambled: boolean,
 };
 
@@ -85,13 +85,13 @@ export function PlaylistView({
           Create playlist(s)
         </button>
       </div>
-      {splitTracks.map((trackChunk, i) =>
+      {splitTracks.map((newTrackList, i) =>
         <TrackTable
-          isActive={trackChunk[0] === (expanded && expanded[0])}
+          isActive={i + 1 === expanded}
           onHeaderClick={setExpanded}
           key={'table' + i}
           partNumber={isSplit ? i + 1 : null}
-          tracks={trackChunk}
+          tracks={newTrackList}
         />,
       )}
     </div>

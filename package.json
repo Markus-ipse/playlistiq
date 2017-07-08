@@ -5,6 +5,7 @@
   "homepage": "https://Markus-ipse.github.io/spotify-playlist-scrambler",
   "dependencies": {
     "bulma": "^0.4.1",
+    "classnames": "^2.2.5",
     "date-fns": "^1.28.5",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -13,7 +14,8 @@
     "recompose": "^0.23.4",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",
-    "redux-saga": "^0.15.3"
+    "redux-saga": "^0.15.3",
+    "scroll-into-view": "^1.8.2"
   },
   "devDependencies": {
     "flow-bin": "^0.49.1",
