@@ -38,12 +38,13 @@ function* fetchTracks({ playlist }: FetchTracksReqAction) {
 
   if (playlistTracks && playlistTracks.next) {
     let nextOffset = playlistTracks.lastOffset || 0;
-    while ((nextOffset += SPOTIFY_PAGING_SIZE) < playlistTracks.total) {
+    do {
+      nextOffset += SPOTIFY_PAGING_SIZE;
       yield fetchPlaylistTracks({
         playlist,
         offset: nextOffset,
       });
-    }
+    } while ((nextOffset) < playlistTracks.total)
   }
 }
 

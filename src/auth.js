@@ -13,10 +13,12 @@ function getHashParams() {
   const q = window.location.hash.substring(1);
 
   let e;
-  while ((e = regexp.exec(q))) {
-    // eslint-disable-line no-cond-assign
-    hashParams[e[1]] = decodeURIComponent(e[2]);
-  }
+  do {
+    e = regexp.exec(q);
+    if (e) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+  } while (e);
   return hashParams;
 }
 /**
@@ -53,7 +55,7 @@ export function login(showDialog: boolean) {
     'user-read-private user-read-email playlist-read-private playlist-modify-public';
   let url = 'https://accounts.spotify.com/authorize';
   url += '?response_type=token';
-  url += '&client_id=' + encodeURIComponent(client_id); // flow-ignore-line
+  url += '&client_id=' + encodeURIComponent(client_id);
   url += '&scope=' + encodeURIComponent(scope);
   url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
   url += '&state=' + encodeURIComponent(state);
