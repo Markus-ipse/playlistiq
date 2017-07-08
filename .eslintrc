@@ -1,7 +1,8 @@
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "module": "commonjs"
-    },
-    "parser": "babel-eslint"
+  "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs"
+  },
+  "parser": "babel-eslint",
+  "extends": "react-app"
 }
