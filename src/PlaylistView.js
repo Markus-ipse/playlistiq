@@ -23,8 +23,8 @@ type Props = {
   playlistCount: number,
   increment: () => void,
   decrement: () => void,
-  expanded: TrackWithMeta[],
-  setExpanded: (partNumber: ?number) => void,
+  expanded: number[],
+  toggleExpanded: (partNumber: ?number) => void,
   isScrambled: boolean,
 };
 
@@ -38,7 +38,7 @@ export function PlaylistView({
   increment,
   decrement,
   expanded,
-  setExpanded,
+  toggleExpanded,
   isScrambled,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
@@ -87,8 +87,8 @@ export function PlaylistView({
       </div>
       {splitTracks.map((newTrackList, i) =>
         <TrackTable
-          isActive={i + 1 === expanded}
-          onHeaderClick={setExpanded}
+          isActive={expanded.includes(i + 1)}
+          onHeaderClick={toggleExpanded}
           key={'table' + i}
           partNumber={isSplit ? i + 1 : null}
           tracks={newTrackList}
@@ -106,10 +106,16 @@ const mapStateToProps = (state: AppState, props: Props) => ({
 
 const addCounting = compose(
   withState('playlistCount', 'setCount', 1),
-  withState('expanded', 'setExpanded', null),
+  withState('expanded', 'setExpanded', []),
   withHandlers({
     increment: ({ setCount }) => () => setCount(n => n + 1),
     decrement: ({ setCount }) => () => setCount(n => n - 1),
+    toggleExpanded: ({ setExpanded }) => clicked => setExpanded(
+      ex =>
+        ex.includes(clicked)
+          ? ex.filter(n => n !== clicked)
+          : ex.concat(clicked),
+    ),
   }),
 );
 

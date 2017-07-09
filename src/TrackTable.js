@@ -31,14 +31,14 @@ export function TrackTable({
 
   const clickHandler = (e: MouseEvent) => {
     const elem = e.currentTarget;
-    if (elem instanceof HTMLElement) {
+    if (!isActive && elem instanceof HTMLElement) {
       window.setTimeout(() => scrollIntoView(elem, {
         align: {
           top: 0,
         },
       }), 100);
     }
-    onHeaderClick(isActive ? null : partNumber);
+    onHeaderClick(partNumber);
   };
 
   const headerClasses = classNames('TrackTable-header', {
