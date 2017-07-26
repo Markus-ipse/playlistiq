@@ -10,10 +10,10 @@ export const chunkArray = <T>(
 ): Array<T[]> => {
   if (chunks < 1) {
     throw new Error(
-      `Invalid chunk count (${chunks}). Must be at least 1 chunk`,
+      `Invalid chunk ${useChunkSize ? 'size' : 'count'} (${chunks}). Must be at least 1 chunk`,
     );
   }
-  if (chunks > arr.length) {
+  if (!useChunkSize && chunks > arr.length) {
     throw new Error(
       `Invalid chunk count (${chunks}). Cannot have more chunks than items in the array (${arr.length})`,
     );
