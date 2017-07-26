@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './auth';
 import { Playlists } from './Playlists';
-import Tracks from './PlaylistView';
+import PlaylistView from './PlaylistView';
 import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 
 import type { Dispatch } from './types/index';
@@ -22,14 +22,14 @@ type Props = {
   dispatch: Dispatch,
 };
 
-class App extends Component {
-  state: {
-    currentPlaylist: ?SimplePlaylist,
-  };
+type State = {
+  currentPlaylist: ?SimplePlaylist,
+};
 
-  props: Props;
-
+class App extends Component<any, Props, State> {
   confirmDialog;
+
+  state;
 
   constructor(props: Props) {
     super(props);
@@ -97,7 +97,7 @@ class App extends Component {
             />}
           {currentPlaylist &&
             isLoggedIn &&
-            <Tracks
+            <PlaylistView
               playlist={currentPlaylist}
               handleBackClick={this.handleBackClick}
             />}

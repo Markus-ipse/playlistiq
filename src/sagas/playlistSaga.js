@@ -5,7 +5,7 @@ import * as Select from '../reducers/selectors';
 
 import type { IOEffect } from 'redux-saga/effects';
 import type { CreatePlaylistsAction } from '../actions/index';
-import type { SimplePlaylist, User } from '../types/spotify';
+import type { AddTracksRes, SimplePlaylist, User } from '../types/spotify';
 import { chunkArray } from '../util/helpers';
 
 function* fetchUserPlaylists() {
@@ -23,19 +23,21 @@ function* fetchUserPlaylists() {
 }
 
 function* addTracks(userId, playlistId, trackURIs) {
-  const chunked = chunkArray(trackURIs, 100, true);
+  const chunked = chunkArray(trackURIs, 101, true);
   for (let URIs of chunked) {
-    const res = yield call(
+    const res: AddTracksRes = yield call(
       Spotify.addTracksToPlaylist,
       userId,
       playlistId,
       URIs,
     );
     console.log(res);
+    if (res) {
+      res
+    }
   }
 }
 
-// 🔀
 function* createPlaylists(action: CreatePlaylistsAction) {
   const { groupedTracks, playlist } = action;
   const user: User = yield select(Select.user);

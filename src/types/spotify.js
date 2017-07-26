@@ -91,3 +91,16 @@ export type PlaylistTrack = {
   is_local: boolean, // Whether this track is a local file or not.
   track: Track, // Information about the track.
 };
+
+export type ReqError = {
+  error: {
+    status: number,
+    message: string,
+  },
+};
+
+export type AddTracksSuccess = {
+  snapshot_id: string,
+};
+
+export type AddTracksRes = AddTracksSuccess | ReqError;

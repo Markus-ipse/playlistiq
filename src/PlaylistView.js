@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { withHandlers, withState, compose } from 'recompose';
+import { withStateHandlers, compose } from 'recompose';
 
 import * as Select from './reducers/selectors';
 import { scrambleTracks, createPlaylists } from './actions/index';
@@ -14,19 +14,26 @@ import type { AppState } from './reducers/index';
 import type { Dispatch } from './types/index';
 import type { TrackWithMeta } from './reducers/selectors';
 
-type Props = {
-  tracks: TrackWithMeta[],
+type OwnProps = {
   playlist: SimplePlaylist,
   handleBackClick: () => void,
+};
+
+type StateProps = {
   isPending: boolean,
-  dispatch: Dispatch,
+  tracks: TrackWithMeta[],
+  isScrambled: boolean,
+} & OwnProps;
+
+type HocProps = {
   playlistCount: number,
   increment: () => void,
   decrement: () => void,
   expanded: number[],
   toggleExpanded: (partNumber: ?number) => void,
-  isScrambled: boolean,
 };
+
+type Props = StateProps & HocProps & { dispatch: Dispatch };
 
 export function PlaylistView({
   tracks,
@@ -98,25 +105,36 @@ export function PlaylistView({
   );
 }
 
-const mapStateToProps = (state: AppState, props: Props) => ({
+
+const mapStateToProps = (state: AppState, props: OwnProps): StateProps => ({
   isPending: Select.tracksPending(state, props.playlist.id),
   tracks: Select.playlistTracks(state, props.playlist.id),
   isScrambled: Select.isScrambled(state, props.playlist.id),
+  ...props,
 });
 
 const addCounting = compose(
-  withState('playlistCount', 'setCount', 1),
-  withState('expanded', 'setExpanded', []),
-  withHandlers({
-    increment: ({ setCount }) => () => setCount(n => n + 1),
-    decrement: ({ setCount }) => () => setCount(n => n - 1),
-    toggleExpanded: ({ setExpanded }) => clicked => setExpanded(
-      ex =>
-        ex.includes(clicked)
-          ? ex.filter(n => n !== clicked)
-          : ex.concat(clicked),
-    ),
-  }),
+  connect(mapStateToProps),
+  withStateHandlers(
+    {
+      playlistCount: 1,
+      expanded: [],
+    },
+    {
+      increment: ({ playlistCount }) => () => ({
+        playlistCount: playlistCount + 1,
+      }),
+      decrement: ({ playlistCount }) => () => ({
+        playlistCount: playlistCount - 1,
+      }),
+      toggleExpanded: ({ expanded }) => (clicked: number) => {
+        const newState = expanded.includes(clicked)
+          ? expanded.filter(n => n !== clicked)
+          : expanded.concat(clicked);
+        return { expanded: newState };
+      },
+    },
+  ),
 );
 
-export default connect(mapStateToProps)(addCounting(PlaylistView));
+export default addCounting(PlaylistView);
