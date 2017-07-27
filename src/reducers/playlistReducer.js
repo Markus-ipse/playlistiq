@@ -2,17 +2,31 @@
 import type { Paging, SimplePlaylist } from '../types/spotify';
 import type { Action } from '../actions/index';
 
-export type PlaylistState = {
+import { combineReducers } from 'redux';
+
+export type FetchedPlaylistsState = {
   data: ?Paging<SimplePlaylist>,
   isPending: boolean,
+}
+
+export type PlaylistState = {
+  fetchedPlaylists: FetchedPlaylistsState,
+  createdPlaylist: SimplePlaylist[],
 };
 
-const initialState: PlaylistState = { data: null, isPending: false };
 
-export default function playlistReducer(
-  state: PlaylistState = initialState,
+function createdPlaylistsReducer(state: SimplePlaylist[] = [], action: Action) {
+  return action.type === 'PLAYLIST_CREATED'
+    ? state.concat(action.playlist)
+    : state;
+}
+
+const initialState: FetchedPlaylistsState = { data: null, isPending: false };
+
+function fetchedPlaylistsReducer(
+  state = initialState,
   action: Action,
-): PlaylistState {
+): FetchedPlaylistsState {
   switch (action.type) {
     case 'FETCH_PLAYLISTS_REQ':
       return { ...state, isPending: true };
@@ -27,3 +41,8 @@ export default function playlistReducer(
       return state;
   }
 }
+
+export default combineReducers({
+  fetchedPlaylists: fetchedPlaylistsReducer,
+  createdPlaylist: createdPlaylistsReducer,
+});

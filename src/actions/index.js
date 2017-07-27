@@ -28,6 +28,11 @@ export type CreatePlaylistsAction = {
   groupedTracks: Array<TrackWithMeta[]>,
 };
 
+export type PlaylistCreatedAction = {
+  type: 'PLAYLIST_CREATED',
+  playlist: SimplePlaylist,
+};
+
 export type Action =
   | { type: 'FETCH_USER_REQ' }
   | { type: 'FETCH_USER_RES', user: User }
@@ -36,6 +41,7 @@ export type Action =
   | { type: 'FETCH_PLAYLISTS_RES', pagedPlaylists: Paging<SimplePlaylist> }
   | FetchTracksReqAction
   | FetchTracksResAction
+  | PlaylistCreatedAction
   | ScrambleTracksAction;
 
 export const fetchUser = () => {
@@ -73,6 +79,13 @@ export const createPlaylists = (
   type: 'CREATE_PLAYLISTS',
   playlist,
   groupedTracks,
+});
+
+export const playlistCreated = (
+  playlist: SimplePlaylist,
+): PlaylistCreatedAction => ({
+  type: 'PLAYLIST_CREATED',
+  playlist,
 });
 
 export const unauthorized = (): Action => ({ type: 'REQUEST_UNAUTHORIZED' });

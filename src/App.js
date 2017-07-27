@@ -8,16 +8,17 @@ import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 
 import type { Dispatch } from './types/index';
 import type { AppState } from './reducers/index';
-import type { Paging, SimplePlaylist, User } from './types/spotify';
+import type { SimplePlaylist, User } from './types/spotify';
 
 import logo from './logo.svg';
 import './App.css';
+import * as Selectors from './reducers/selectors';
 
 type Props = {
   isLoggedIn: boolean,
   user: ?User,
   userPending: boolean,
-  playlists: ?Paging<SimplePlaylist>,
+  playlists: SimplePlaylist[],
   playlistsPending: boolean,
   dispatch: Dispatch,
 };
@@ -111,8 +112,8 @@ const mapStateToProps = (state: AppState, props: Props) => ({
   isLoggedIn: state.user.isLoggedIn,
   user: state.user.data,
   userPending: state.user.isPending,
-  playlists: state.playlists.data,
-  playlistsPending: state.playlists.isPending,
+  playlists: Selectors.playlists(state),
+  playlistsPending: Selectors.playlistsPending(state),
 });
 
 export default connect(mapStateToProps)(App);

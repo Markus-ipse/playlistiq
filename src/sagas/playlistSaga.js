@@ -7,6 +7,7 @@ import type { IOEffect } from 'redux-saga/effects';
 import type { CreatePlaylistsAction } from '../actions/index';
 import type { AddTracksRes, SimplePlaylist, User } from '../types/spotify';
 import { chunkArray } from '../util/helpers';
+import { playlistCreated } from '../actions/index';
 
 function* fetchUserPlaylists() {
   const res = yield call(Spotify.getUserPlaylists);
@@ -31,11 +32,9 @@ function* addTracks(userId, playlistId, trackURIs) {
       playlistId,
       URIs,
     );
-    console.log(res);
-    if (res) {
-      res
-    }
   }
+
+  // Todo: handle errors
 }
 
 function* createPlaylists(action: CreatePlaylistsAction) {
@@ -50,17 +49,16 @@ function* createPlaylists(action: CreatePlaylistsAction) {
       user.id,
       playlistName,
     );
-    console.log(createdPlaylist);
+    yield put(playlistCreated(createdPlaylist));
     const trackURIs = newPL.map(t => t.track.uri);
-    const result = yield call(
+    yield call(
       addTracks,
       user.id,
       createdPlaylist.id,
       trackURIs,
     );
-    console.log(result);
   }
-  console.log('All playlists created!');
+
 }
 export function* playlistsSaga(): Generator<IOEffect, *, *> {
   yield takeLatest('FETCH_PLAYLISTS_REQ', fetchUserPlaylists);

@@ -6,14 +6,14 @@ import type { Paging, SimplePlaylist } from './types/spotify';
 import { Icon } from './Icon';
 
 type Props = {
-  playlists: ?Paging<SimplePlaylist>,
+  playlists: SimplePlaylist[],
   getTracks: (p: SimplePlaylist) => void,
 };
 
 export function Playlists({ playlists, getTracks }: Props) {
   if (!playlists) return <p>No Playlists</p>;
   return (
-    <table className="table is-narrow is-striped ps-table">
+    <table className="table is-narrow is-stripe d ps-table">
       <thead>
         <tr>
           <th>Playlist</th>
@@ -23,7 +23,7 @@ export function Playlists({ playlists, getTracks }: Props) {
         </tr>
       </thead>
       <tbody>
-        {playlists.items.map(pl =>
+        {playlists.map(pl =>
           <tr key={pl.id} onClick={() => getTracks(pl)}>
             <td>
               {pl.name}
