@@ -2,12 +2,12 @@
 import React from 'react';
 import { SpotifyLink } from './SpotifyLink';
 
-import type { SimplePlaylist } from './types/spotify';
 import { Icon } from './Icon';
+import type { Playlist } from './types/index';
 
 type Props = {
-  playlists: SimplePlaylist[],
-  getTracks: (p: SimplePlaylist) => void,
+  playlists: Playlist[],
+  getTracks: (p: Playlist) => void,
 };
 
 export function Playlists({ playlists, getTracks }: Props) {

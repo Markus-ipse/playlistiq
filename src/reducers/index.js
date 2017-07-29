@@ -1,8 +1,8 @@
 // @flow
 import { combineReducers } from 'redux';
 
-import userReducer from './userReducer';
-import playlistReducer from './playlistReducer';
+import { userReducer } from './userReducer';
+import { playlistReducer } from './playlistReducer';
 import { tracksReducer } from './tracksReducer';
 
 import type { UserState } from './userReducer';
@@ -15,10 +15,8 @@ export type AppState = {
   +tracks: TracksState,
 };
 
-const appState = combineReducers({
+export const appStateReducer = combineReducers({
   user: userReducer,
   playlists: playlistReducer,
   tracks: tracksReducer,
 });
-
-export default appState;

@@ -50,7 +50,7 @@ export function login(showDialog: boolean) {
   }
 
   const state = generateRandomString(16);
-  localStorage.setItem(stateKey, state);
+  window.localStorage.setItem(stateKey, state);
   const scope =
     'user-read-private user-read-email playlist-read-private playlist-modify-public';
   let url = 'https://accounts.spotify.com/authorize';

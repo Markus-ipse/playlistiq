@@ -10,19 +10,15 @@ import 'bulma/css/bulma.css';
 import './index.css';
 
 import App from './App';
-import appStateReducer from './reducers';
+import {appStateReducer} from './reducers';
 import { rootSaga } from './sagas';
-import { isLoggedIn } from './auth';
 
 import type { Store } from './types/index';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const preloadedState = { user: { isLoggedIn: isLoggedIn() } };
-
 const store: Store = createStore(
   appStateReducer,
-  preloadedState,
   composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 

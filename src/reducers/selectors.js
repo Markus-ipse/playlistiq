@@ -1,6 +1,7 @@
 // @flow
 import type { AppState } from './index';
 import type { SimplePlaylist, Track, User } from '../types/spotify';
+import type { CreatedPlaylist, Playlist } from '../types/index';
 
 export type TrackWithMeta = {
   id: number,
@@ -47,9 +48,11 @@ const fetchedPlaylists = (state: AppState): SimplePlaylist[] =>
     ? state.playlists.fetchedPlaylists.data.items
     : [];
 
-const createdPlaylists = (state: AppState): SimplePlaylist[] => state.playlists.createdPlaylist;
+const createdPlaylists = (state: AppState): CreatedPlaylist[] =>
+  state.playlists.createdPlaylist;
 
-export const playlists = (state: AppState): SimplePlaylist[] => createdPlaylists(state).concat(fetchedPlaylists(state));
+export const playlists = (state: AppState): Playlist[] =>
+  createdPlaylists(state).concat(fetchedPlaylists(state));
 
 export const tracksPending = (state: AppState, playlistId: string) =>
   playlistTrackPages(state, playlistId).next !== null;
@@ -57,4 +60,5 @@ export const tracksPending = (state: AppState, playlistId: string) =>
 export const user = (state: AppState) =>
   state.user.data ? state.user.data : null;
 
-export const playlistsPending = (state: AppState) => state.playlists.fetchedPlaylists.isPending
+export const playlistsPending = (state: AppState) =>
+  state.playlists.fetchedPlaylists.isPending;

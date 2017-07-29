@@ -1,6 +1,7 @@
 // @flow
 import type { User } from '../types/spotify';
 import type { Action } from '../actions/index';
+import { isLoggedIn } from '../auth';
 
 export type UserState = {
   isLoggedIn: boolean,
@@ -11,10 +12,10 @@ export type UserState = {
 const initialState: UserState = {
   data: null,
   isPending: false,
-  isLoggedIn: false,
+  isLoggedIn: isLoggedIn(),
 };
 
-export default function userReducer(
+export function userReducer(
   state: UserState = initialState,
   action: Action,
 ): UserState {

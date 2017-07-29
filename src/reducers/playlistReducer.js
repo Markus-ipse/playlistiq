@@ -3,6 +3,7 @@ import type { Paging, SimplePlaylist } from '../types/spotify';
 import type { Action } from '../actions/index';
 
 import { combineReducers } from 'redux';
+import type { CreatedPlaylist } from '../types/index';
 
 export type FetchedPlaylistsState = {
   data: ?Paging<SimplePlaylist>,
@@ -11,13 +12,13 @@ export type FetchedPlaylistsState = {
 
 export type PlaylistState = {
   fetchedPlaylists: FetchedPlaylistsState,
-  createdPlaylist: SimplePlaylist[],
+  createdPlaylist: CreatedPlaylist[],
 };
 
 
-function createdPlaylistsReducer(state: SimplePlaylist[] = [], action: Action) {
+function createdPlaylistsReducer(state: CreatedPlaylist[] = [], action: Action) {
   return action.type === 'PLAYLIST_CREATED'
-    ? state.concat(action.playlist)
+    ? state.concat({ ...action.playlist, createdByApp: true })
     : state;
 }
 
@@ -42,7 +43,7 @@ function fetchedPlaylistsReducer(
   }
 }
 
-export default combineReducers({
+export const playlistReducer = combineReducers({
   fetchedPlaylists: fetchedPlaylistsReducer,
   createdPlaylist: createdPlaylistsReducer,
 });

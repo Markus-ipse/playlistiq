@@ -3,27 +3,26 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as Spotify from '../spotifyAPI';
 import * as Select from '../reducers/selectors';
 
-import type { IOEffect } from 'redux-saga/effects';
 import type { CreatePlaylistsAction } from '../actions/index';
 import type { AddTracksRes, SimplePlaylist, User } from '../types/spotify';
 import { chunkArray } from '../util/helpers';
-import { playlistCreated } from '../actions/index';
+import { playlistCreated, receivePlaylists, unauthorized } from '../actions/index';
 
-function* fetchUserPlaylists() {
+function* fetchUserPlaylists(): Generator<*, * ,*> {
   const res = yield call(Spotify.getUserPlaylists);
   if (res.error) {
     const { error } = res;
     if (error.status === 401) {
-      yield put({ type: 'REQUEST_UNAUTHORIZED', message: error.message });
+      yield put(unauthorized(error.message));
     } else {
       console.error('Failed to fetch playlists:', error);
     }
   } else {
-    yield put({ type: 'FETCH_PLAYLISTS_RES', pagedPlaylists: res });
+    yield put(receivePlaylists(res));
   }
 }
 
-function* addTracks(userId, playlistId, trackURIs) {
+function* addTracks(userId, playlistId, trackURIs): Generator<*, * ,*> {
   const chunked = chunkArray(trackURIs, 101, true);
   for (let URIs of chunked) {
     const res: AddTracksRes = yield call(
@@ -32,12 +31,18 @@ function* addTracks(userId, playlistId, trackURIs) {
       playlistId,
       URIs,
     );
+
+    if (res.error) {
+      console.log('Doh!', res)
+    } else {
+      console.log('Woho!', res);
+    }
   }
 
   // Todo: handle errors
 }
 
-function* createPlaylists(action: CreatePlaylistsAction) {
+function* createPlaylists(action: CreatePlaylistsAction): Generator<*, *, *> {
   const { groupedTracks, playlist } = action;
   const user: User = yield select(Select.user);
 
@@ -60,7 +65,7 @@ function* createPlaylists(action: CreatePlaylistsAction) {
   }
 
 }
-export function* playlistsSaga(): Generator<IOEffect, *, *> {
+export function* playlistsSaga(): Generator<*, *, *> {
   yield takeLatest('FETCH_PLAYLISTS_REQ', fetchUserPlaylists);
   yield takeLatest('CREATE_PLAYLISTS', createPlaylists);
 }

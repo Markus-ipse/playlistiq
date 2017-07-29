@@ -6,9 +6,9 @@ import { Playlists } from './Playlists';
 import PlaylistView from './PlaylistView';
 import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
 
-import type { Dispatch } from './types/index';
+import type { Dispatch, Playlist } from './types/index';
 import type { AppState } from './reducers/index';
-import type { SimplePlaylist, User } from './types/spotify';
+import type { User } from './types/spotify';
 
 import logo from './logo.svg';
 import './App.css';
@@ -18,13 +18,13 @@ type Props = {
   isLoggedIn: boolean,
   user: ?User,
   userPending: boolean,
-  playlists: SimplePlaylist[],
+  playlists: Playlist[],
   playlistsPending: boolean,
   dispatch: Dispatch,
 };
 
 type State = {
-  currentPlaylist: ?SimplePlaylist,
+  currentPlaylist: ?Playlist,
 };
 
 class App extends Component<any, Props, State> {
@@ -47,7 +47,7 @@ class App extends Component<any, Props, State> {
     }
   }
 
-  getPlaylistTracks = (playlist: SimplePlaylist) => {
+  getPlaylistTracks = (playlist: Playlist) => {
     this.setState({ currentPlaylist: playlist });
 
     this.props.dispatch(fetchTracks(playlist));

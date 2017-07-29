@@ -1,9 +1,16 @@
+// @flow
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as Spotify from '../spotifyAPI';
-import type { FetchTracksReqAction } from '../actions/index';
-import type { AppState } from '../reducers/index';
+import { unauthorized } from '../actions/index';
 
-function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
+import type { AppState } from '../reducers/index';
+import type { FetchTracksAction } from '../actions/index';
+import type { Playlist } from '../types/index';
+
+function* fetchPlaylistTracks({
+  playlist,
+  offset,
+}: { offset: number, playlist: Playlist }) {
   const res = yield call(
     Spotify.getPlaylistTracks,
     playlist.owner.id,
@@ -14,7 +21,7 @@ function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
   if (res.error) {
     const { error } = res;
     if (error.status === 401) {
-      yield put({ type: 'REQUEST_UNAUTHORIZED', message: error.message });
+      yield put(unauthorized(error.message));
     } else {
       console.error('Failed to fetch tracks:', error);
     }
@@ -29,7 +36,7 @@ function* fetchPlaylistTracks({ playlist, offset }: FetchTracksReqAction) {
 
 const SPOTIFY_PAGING_SIZE = 100;
 
-function* fetchTracks({ playlist }: FetchTracksReqAction) {
+function* fetchTracks({ playlist }: FetchTracksAction) {
   yield fetchPlaylistTracks({ playlist, offset: 0 });
 
   const playlistTracks = yield select(
@@ -44,10 +51,10 @@ function* fetchTracks({ playlist }: FetchTracksReqAction) {
         playlist,
         offset: nextOffset,
       });
-    } while ((nextOffset) < playlistTracks.total)
+    } while (nextOffset < playlistTracks.total);
   }
 }
 
-export function* tracksSaga() {
+export function* tracksSaga(): Generator<*, *, *> {
   yield takeLatest('FETCH_TRACKS_REQ', fetchTracks);
 }

@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import { withStateHandlers, compose } from 'recompose';
 
 import * as Select from './reducers/selectors';
-import { scrambleTracks, createPlaylists } from './actions/index';
+import * as Actions from './actions/index';
 import { ScrambleOptions } from './ScrambleOptions';
 import { TrackTable } from './TrackTable';
 import { chunkArray, getTotalPlayTime } from './util/helpers';
 
-import type { SimplePlaylist } from './types/spotify';
 import type { AppState } from './reducers/index';
-import type { Dispatch } from './types/index';
+import type { Dispatch, Playlist } from './types/index';
 import type { TrackWithMeta } from './reducers/selectors';
+import type { Action } from './actions/index';
 
 type OwnProps = {
-  playlist: SimplePlaylist,
+  playlist: Playlist,
   handleBackClick: () => void,
 };
 
@@ -25,6 +25,11 @@ type StateProps = {
   isScrambled: boolean,
 } & OwnProps;
 
+type DispatchProps = {
+  scrambleTracks: () => Action,
+  createPlaylists: (splitTracks: Array<TrackWithMeta[]>) => Action,
+};
+
 type HocProps = {
   playlistCount: number,
   increment: () => void,
@@ -33,20 +38,21 @@ type HocProps = {
   toggleExpanded: (partNumber: ?number) => void,
 };
 
-type Props = StateProps & HocProps & { dispatch: Dispatch };
+type Props = StateProps & DispatchProps & HocProps;
 
 export function PlaylistView({
   tracks,
   playlist,
   handleBackClick,
   isPending,
-  dispatch,
   playlistCount,
   increment,
   decrement,
   expanded,
   toggleExpanded,
   isScrambled,
+  createPlaylists,
+  scrambleTracks,
 }: Props) {
   if (!tracks) return <p>No tracks</p>;
   const splitTracks =
@@ -81,13 +87,13 @@ export function PlaylistView({
           decrement={decrement}
           min={1}
           max={tracks.length / 5}
-          scramble={() => dispatch(scrambleTracks(playlist))}
+          scramble={scrambleTracks}
         />
 
         <button
           className="button is-primary"
           disabled={isPending || createDisabled}
-          onClick={() => dispatch(createPlaylists(playlist, splitTracks))}
+          onClick={() => createPlaylists(splitTracks)}
         >
           Create playlist(s)
         </button>
@@ -105,7 +111,6 @@ export function PlaylistView({
   );
 }
 
-
 const mapStateToProps = (state: AppState, props: OwnProps): StateProps => ({
   isPending: Select.tracksPending(state, props.playlist.id),
   tracks: Select.playlistTracks(state, props.playlist.id),
@@ -113,8 +118,17 @@ const mapStateToProps = (state: AppState, props: OwnProps): StateProps => ({
   ...props,
 });
 
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: OwnProps,
+): DispatchProps => ({
+  scrambleTracks: () => dispatch(Actions.scrambleTracks(ownProps.playlist)),
+  createPlaylists: splitTracks =>
+    dispatch(Actions.createPlaylists(ownProps.playlist, splitTracks)),
+});
+
 const addCounting = compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
     {
       playlistCount: 1,

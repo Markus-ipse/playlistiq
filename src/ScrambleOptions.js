@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Action } from './actions/index';
 
 type Props = {
   outputCount: number,
@@ -7,7 +8,7 @@ type Props = {
   max: number,
   increment: () => void,
   decrement: () => void,
-  scramble: () => void,
+  scramble: () => Action,
   disabled: boolean,
 };
 

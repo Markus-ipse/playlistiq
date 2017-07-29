@@ -1,20 +1,22 @@
+// @flow
 import { call, put, takeLatest } from 'redux-saga/effects';
 import * as Spotify from '../spotifyAPI';
+import { receiveUser, unauthorized } from '../actions/index';
 
-function* fetchUser(action) {
+function* fetchUserSaga(): Generator<*, *, *> {
   const res = yield call(Spotify.getUser);
   if (res.error) {
     const { error } = res;
     if (error.status === 401) {
-      yield put({ type: 'REQUEST_UNAUTHORIZED', message: error.message });
+      yield put(unauthorized(error.message));
     } else {
       console.error('Failed to fetch user:', error);
     }
   } else {
-    yield put({ type: 'FETCH_USER_RES', user: res });
+    yield put(receiveUser(res));
   }
 }
 
-export function* userSaga() {
-  yield takeLatest('FETCH_USER_REQ', fetchUser);
+export function* userSaga(): Generator<*, *, *> {
+  yield takeLatest('FETCH_USER_REQ', fetchUserSaga);
 }
