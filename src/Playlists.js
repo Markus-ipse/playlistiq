@@ -2,7 +2,7 @@
 import React from 'react';
 import { SpotifyLink } from './SpotifyLink';
 
-import type { Paging, SimplePlaylist } from './types/spotify';
+import type { SimplePlaylist } from './types/spotify';
 import { Icon } from './Icon';
 
 type Props = {
