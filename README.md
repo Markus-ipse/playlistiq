@@ -1,4 +1,4 @@
-If you just want to scramble your playlists: https://Markus-ipse.github.io/spotify-playlist-scrambler
+If you just want to scramble your playlists: https://Markus-ipse.github.io/playlistiq
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

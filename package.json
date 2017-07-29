@@ -1,8 +1,8 @@
 {
-  "name": "playlist-scramblr",
+  "name": "PlaylistIQ",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Markus-ipse.github.io/spotify-playlist-scrambler",
+  "homepage": "https://Markus-ipse.github.io/playlistiq",
   "dependencies": {
     "bulma": "^0.4.3",
     "classnames": "^2.2.5",
