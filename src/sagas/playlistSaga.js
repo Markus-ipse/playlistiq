@@ -23,7 +23,8 @@ function* fetchUserPlaylists(): Generator<*, * ,*> {
 }
 
 function* addTracks(userId, playlistId, trackURIs): Generator<*, * ,*> {
-  const chunked = chunkArray(trackURIs, 101, true);
+  // const chunked = chunkArray(trackURIs, 101, true); // Todo use for testing failure recovery
+  const chunked = chunkArray(trackURIs, 100, true);
   for (let URIs of chunked) {
     const res: AddTracksRes = yield call(
       Spotify.addTracksToPlaylist,
