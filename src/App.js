@@ -27,7 +27,7 @@ type State = {
   currentPlaylist: ?Playlist,
 };
 
-class App extends Component<any, Props, State> {
+export class App extends Component<any, Props, State> {
   confirmDialog;
 
   state;
