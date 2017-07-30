@@ -8,15 +8,17 @@ import type { CreatedPlaylist } from '../types/index';
 export type FetchedPlaylistsState = {
   data: ?Paging<SimplePlaylist>,
   isPending: boolean,
-}
+};
 
 export type PlaylistState = {
   fetchedPlaylists: FetchedPlaylistsState,
   createdPlaylist: CreatedPlaylist[],
 };
 
-
-function createdPlaylistsReducer(state: CreatedPlaylist[] = [], action: Action) {
+function createdPlaylistsReducer(
+  state: CreatedPlaylist[] = [],
+  action: Action,
+) {
   return action.type === 'PLAYLIST_CREATED'
     ? state.concat({ ...action.playlist, createdByApp: true })
     : state;

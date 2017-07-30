@@ -1,3 +1,4 @@
+// @flow
 import * as React from 'react';
 import { Icon } from './Icon';
 
@@ -5,7 +6,7 @@ const stopPropagation = (e: Event) => e.stopPropagation();
 
 type Props = {
   uri: string,
-  size: number,
+  size?: number,
 };
 
 export const SpotifyLink = ({ uri, size = 16 }: Props) => {

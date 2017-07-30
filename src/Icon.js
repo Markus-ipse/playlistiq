@@ -1,3 +1,4 @@
+// @flow
 import * as React from 'react';
 
 const icons = {
@@ -21,7 +22,7 @@ const icons = {
 
 type Props = {
   type: string,
-  size: number,
+  size?: number,
 };
 
 export const Icon = ({ type, size = 21 }: Props) => {
