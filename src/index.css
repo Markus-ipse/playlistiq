@@ -17,19 +17,30 @@ body {
   font-family: sans-serif;
 }
 
-.ps-table td {
+.actionBar {
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.actionBar-title {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+.actionBar-edit {
+  min-width: 66px;
+}
+
+table.ps-no-wrap td {
   white-space: nowrap;
   max-width: 1px;
   text-overflow: ellipsis;
   overflow: hidden;
 
   cursor: pointer; /* Move elsewhere */
-}
-
-.ps-table td:last-child,
-.ps-table th:last-child {
-  text-align: center;
-  width: 2.3em;
 }
 
 /** Utils **/

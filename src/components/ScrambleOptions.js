@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { Action } from './actions/index';
+import type { Action } from '../actions/index';
 
 type Props = {
   outputCount: number,

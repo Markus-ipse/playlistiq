@@ -7,12 +7,16 @@
   border-bottom-color: transparent;
 }
 
-.TrackTable-num-col {
+.TrackTable-numCol {
   width: 3rem;
 }
 
-.TrackTable-date-col {
+.TrackTable-dateCol {
   width: 6.3rem;
+}
+
+.TrackTable-spotifyLinkCol {
+  width: 2.3rem;
 }
 
 .TrackTable-time {
@@ -21,7 +25,7 @@
 }
 
 @media screen and (min-width: 450px) {
-  .TrackTable-date-col {
+  .TrackTable-dateCol {
     width: 9rem;
   }
   .TrackTable-time {

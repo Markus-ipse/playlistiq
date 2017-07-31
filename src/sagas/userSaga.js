@@ -1,6 +1,6 @@
 // @flow
 import { call, put, takeLatest } from 'redux-saga/effects';
-import * as Spotify from '../spotifyAPI';
+import * as Spotify from '../api/spotifyAPI';
 import { receiveUser, unauthorized } from '../actions/index';
 
 function* fetchUserSaga(): Generator<*, *, *> {

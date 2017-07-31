@@ -1,18 +1,17 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { login } from './auth';
-import { Playlists } from './Playlists';
-import PlaylistView from './PlaylistView';
+import { login } from './api/spotifyAuth';
+import MyPlaylistsView from './views/MyPlaylistsView';
+import PlaylistView from './views/PlaylistView';
 import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
+import * as Selectors from './reducers/selectors';
 
 import type { Dispatch, Playlist } from './types/index';
 import type { AppState } from './reducers/index';
 import type { User } from './types/spotify';
 
-import logo from './logo.svg';
 import './App.css';
-import * as Selectors from './reducers/selectors';
 
 type Props = {
   isLoggedIn: boolean,
@@ -28,9 +27,9 @@ type State = {
 };
 
 export class App extends Component<any, Props, State> {
-  confirmDialog;
+  confirmDialog: HTMLInputElement;
 
-  state;
+  state: State;
 
   constructor(props: Props) {
     super(props);
@@ -63,16 +62,10 @@ export class App extends Component<any, Props, State> {
 
   render() {
     const { currentPlaylist } = this.state;
-    const { user, isLoggedIn, playlists } = this.props;
+    const { isLoggedIn, playlists } = this.props;
 
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>
-            Welcome {user && user.display_name}
-          </h2>
-        </div>
+      <div>
         <div className="container">
           {!isLoggedIn &&
             <div className="ps-m">
@@ -91,7 +84,7 @@ export class App extends Component<any, Props, State> {
             </div>}
           {!currentPlaylist &&
             isLoggedIn &&
-            <Playlists
+            <MyPlaylistsView
               playlists={playlists}
               current={currentPlaylist}
               getTracks={this.getPlaylistTracks}

@@ -3,16 +3,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStateHandlers, compose } from 'recompose';
 
-import * as Select from './reducers/selectors';
-import * as Actions from './actions/index';
-import { ScrambleOptions } from './ScrambleOptions';
-import { TrackTable } from './TrackTable';
-import { chunkArray, getTotalPlayTime } from './util/helpers';
+import * as Select from '../reducers/selectors';
+import * as Actions from '../actions/index';
+import { ScrambleOptions } from '../components/ScrambleOptions';
+import { TrackTable } from '../components/TrackTable';
+import { chunkArray, getTotalPlayTime } from '../util/helpers';
 
-import type { AppState } from './reducers/index';
-import type { Dispatch, Playlist } from './types/index';
-import type { TrackWithMeta } from './reducers/selectors';
-import type { Action } from './actions/index';
+import type { AppState } from '../reducers/index';
+import type { Dispatch, Playlist } from '../types/index';
+import type { TrackWithMeta } from '../reducers/selectors';
+import type { Action } from '../actions/index';
 
 type OwnProps = {
   playlist: Playlist,

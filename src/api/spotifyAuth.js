@@ -1,5 +1,5 @@
 // @flow
-import { isDev } from './util/helpers';
+import { isDev } from '../util/helpers';
 
 const stateKey = 'spotify_auth_state';
 const tokenKey = 'spotify_token';
@@ -115,5 +115,11 @@ export function spotifyPOST(url: string, data: any) {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(data),
+  });
+}
+
+export function spotifyDELETE(url: string) {
+  return spotifyReq(url, {
+    method: 'DELETE',
   });
 }

@@ -1,12 +1,12 @@
 // @flow
 
-import { spotifyPOST, spotifyReq } from './auth';
+import { spotifyDELETE, spotifyPOST, spotifyReq } from './spotifyAuth';
 import type {
   Paging,
   PlaylistTrack,
   SimplePlaylist,
   User,
-} from './types/spotify';
+} from '../types/spotify';
 
 export function getUser(): Promise<User> {
   return spotifyReq('https://api.spotify.com/v1/me');
@@ -42,4 +42,8 @@ export function addTracksToPlaylist(
   return spotifyPOST(`/v1/users/${userId}/playlists/${playlistId}/tracks`, {
     uris: trackURIs,
   });
+}
+
+export function unfollowPlaylist(ownerId: string, playlistId: string): Promise<any> {
+ return spotifyDELETE(`/v1/users/${ownerId}/playlists/${playlistId}/followers`);
 }

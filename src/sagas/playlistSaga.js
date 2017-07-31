@@ -1,6 +1,6 @@
 // @flow
 import { call, put, takeLatest, select } from 'redux-saga/effects';
-import * as Spotify from '../spotifyAPI';
+import * as Spotify from '../api/spotifyAPI';
 import * as Select from '../reducers/selectors';
 
 import type { CreatePlaylistsAction } from '../actions/index';

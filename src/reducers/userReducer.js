@@ -1,7 +1,7 @@
 // @flow
 import type { User } from '../types/spotify';
 import type { Action } from '../actions/index';
-import { isLoggedIn } from '../auth';
+import { isLoggedIn } from '../api/spotifyAuth';
 
 export type UserState = {
   isLoggedIn: boolean,

@@ -3,12 +3,12 @@ import React from 'react';
 import format from 'date-fns/format';
 import classNames from 'classnames';
 import scrollIntoView from 'scroll-into-view';
-import { getTotalPlayTime } from './util/helpers';
+import { getTotalPlayTime } from '../util/helpers';
 import { SpotifyLink } from './SpotifyLink';
 import { Icon } from './Icon';
 
-import type { Track } from './types/spotify';
-import type { TrackWithMeta } from './reducers/selectors';
+import type { Track } from '../types/spotify';
+import type { TrackWithMeta } from '../reducers/selectors';
 
 import './TrackTable.css';
 
@@ -53,13 +53,13 @@ export function TrackTable({
           {isActive && <strong>*</strong>}
         </div>}
       {activeOrSingle &&
-        <table className="table is-narrow is-striped ps-table">
+        <table className="table is-narrow is-striped ps-no-wrap">
           <colgroup>
-            <col className="TrackTable-num-col" />
+            <col className="TrackTable-numCol" />
             <col />
             <col />
-            <col className="TrackTable-date-col" />
-            <col />
+            <col className="TrackTable-dateCol" />
+            <col className="TrackTable-spotifyLinkCol" />
           </colgroup>
           <thead>
             <tr>
