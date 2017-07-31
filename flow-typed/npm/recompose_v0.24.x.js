@@ -4,7 +4,6 @@
 // TODO:
 // extend compose to 10
 
-import { ConnectedComponent } from './react-redux_v5.x.x';
 
 /**
  * 1) Types give additional constraint on a language, recompose was written on the untyped language
@@ -72,7 +71,7 @@ declare module 'recompose' {
 
   declare type ClassComponent<D, A, S> = Class<React$Component<D, A, S>>
 
-  declare type Component<A> = FunctionComponent<A> | ClassComponent<any, A, any> | ConnectedComponent<any, A, any>
+  declare type Component<A> = FunctionComponent<A> | ClassComponent<any, A, any>
 
   declare type UnaryFn<A, R> = (a: A) => R
 
@@ -186,8 +185,8 @@ declare module 'recompose' {
   declare export function onlyUpdateForPropTypes<A>(
     a: Component<A>
   ): Component<A>
-  declare export function onlyUpdateForKeys<A>(Array<$Keys<A>>): HOC<A, A>
-  declare export function shouldUpdate<A>(
+  declare export function onlyUpdateForKeys<A>(arr: Array<$Keys<A>>): HOC<A, A>
+  declare export function shouldUpdate<A>(fn:
     (props: A, nextProps: A) => boolean
   ): HOC<A, A>
 
@@ -275,7 +274,7 @@ declare module 'recompose' {
 
   // Help needed, as explicitly providing the type
   // errors not detected, see TODO at test_mapPropsStream.js
-  declare export function mapPropsStream<Base, Enhanced>(
+  declare export function mapPropsStream<Base, Enhanced>(fn:
     (props$: any) => any
   ): HOC<Base, Enhanced>
 
