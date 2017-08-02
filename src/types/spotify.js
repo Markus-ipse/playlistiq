@@ -1,6 +1,6 @@
 // @flow
 
-export type Paging<T> = {
+export type Paging<T> = {|
   href: string, // A link to the Web API endpoint returning the full result of the request.
   items: T[], // The requested data.
   limit: number, // The maximum number of items in the response (as set in the query or by default).
@@ -8,7 +8,7 @@ export type Paging<T> = {
   offset: number, // The offset of the items returned (as set in the query or by default).
   previous: string, // URL to the previous page of items. (null if none)
   total: number, // The total number of items available to return.
-};
+|};
 
 export type Image = {
   height: number, // The image height in pixels. If unknown: null or not returned.
@@ -92,15 +92,15 @@ export type PlaylistTrack = {
   track: Track, // Information about the track.
 };
 
-export type ReqError = {
+export type ApiError = {|
   error: {
     status: number,
     message: string,
   },
-};
+|};
 
 export type AddTracksSuccess = {
   snapshot_id: string,
 };
 
-export type AddTracksRes = AddTracksSuccess | ReqError;
+export type AddTracksRes = AddTracksSuccess | ApiError;

@@ -3,7 +3,7 @@
 import { spotifyDELETE, spotifyPOST, spotifyReq } from './spotifyAuth';
 import type {
   Paging,
-  PlaylistTrack,
+  PlaylistTrack, ApiError,
   SimplePlaylist,
   User,
 } from '../types/spotify';
@@ -44,6 +44,6 @@ export function addTracksToPlaylist(
   });
 }
 
-export function unfollowPlaylist(ownerId: string, playlistId: string): Promise<any> {
+export function unfollowPlaylist(ownerId: string, playlistId: string): Promise<{}> {
  return spotifyDELETE(`/v1/users/${ownerId}/playlists/${playlistId}/followers`);
 }

@@ -1,21 +1,38 @@
 // @flow
 import React from 'react';
+import classNames from 'classnames';
+import { SpotifyLink } from './SpotifyLink';
 import { Icon } from './Icon';
 
 import type { Playlist } from '../types/index';
-import { SpotifyLink } from './SpotifyLink';
+import type { User } from '../types/spotify';
 
 import './PlaylistTable.css';
 
 type Props = {
+  user: User,
   playlists: Playlist[],
   getTracks: (p: Playlist) => void,
+  editMode: boolean,
+  multiMode?: boolean,
+  showConfirm: (pl: Playlist[]) => void,
 };
 
-export const PlaylistTable = ({ playlists, getTracks }: Props) => (
+export const PlaylistTable = ({
+  user,
+  playlists,
+  getTracks,
+  editMode,
+  multiMode,
+  showConfirm,
+}: Props) =>
   <table className="table is-striped ps-no-wrap PlaylistTable">
     <colgroup>
-      <col />
+      <col
+        className={classNames('PlaylistTable-checkboxCol', {
+          hiddenCol: !editMode,
+        })}
+      />
       <col />
       <col className="PlaylistTable-spotifyLinkCol" />
     </colgroup>
@@ -32,9 +49,15 @@ export const PlaylistTable = ({ playlists, getTracks }: Props) => (
       {playlists.map(pl =>
         <tr key={pl.id}>
           <td className="PlaylistTable-checkboxCell">
-            <label className="checkbox PlaylistTable-checkboxLabel">
-              <input type="checkbox"/>
-            </label>
+            {pl.owner.id === user.id &&
+              (multiMode
+                ? <label className="checkbox PlaylistTable-checkboxLabel">
+                    <input type="checkbox" />
+                  </label>
+                : <span
+                    className="delete"
+                    onClick={() => showConfirm([pl])}
+                  />)}
           </td>
           <td onClick={() => getTracks(pl)}>
             {pl.name}
@@ -45,5 +68,4 @@ export const PlaylistTable = ({ playlists, getTracks }: Props) => (
         </tr>,
       )}
     </tbody>
-  </table>
-);
+  </table>;

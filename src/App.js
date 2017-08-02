@@ -4,19 +4,22 @@ import { connect } from 'react-redux';
 import { login } from './api/spotifyAuth';
 import MyPlaylistsView from './views/MyPlaylistsView';
 import PlaylistView from './views/PlaylistView';
-import { fetchPlaylists, fetchUser, fetchTracks } from './actions/index';
+import {
+  fetchPlaylists,
+  fetchUser,
+  fetchTracks,
+  deletePlaylists,
+} from './actions/index';
 import * as Selectors from './reducers/selectors';
 
 import type { Dispatch, Playlist } from './types/index';
 import type { AppState } from './reducers/index';
-import type { User } from './types/spotify';
+import type { UserState } from './reducers/userReducer';
 
 import './App.css';
 
 type Props = {
-  isLoggedIn: boolean,
-  user: ?User,
-  userPending: boolean,
+  user: UserState,
   playlists: Playlist[],
   playlistsPending: boolean,
   dispatch: Dispatch,
@@ -40,7 +43,7 @@ export class App extends Component<any, Props, State> {
   }
 
   componentDidMount() {
-    if (this.props.isLoggedIn) {
+    if (this.props.user.isLoggedIn) {
       this.props.dispatch(fetchUser());
       this.props.dispatch(fetchPlaylists());
     }
@@ -60,14 +63,18 @@ export class App extends Component<any, Props, State> {
     login(this.confirmDialog.checked);
   };
 
+  handleDeletePlaylists = (playlists: Playlist[]) => {
+    this.props.dispatch(deletePlaylists(playlists));
+  };
+
   render() {
     const { currentPlaylist } = this.state;
-    const { isLoggedIn, playlists } = this.props;
+    const { playlists, user } = this.props;
 
     return (
       <div>
         <div className="container">
-          {!isLoggedIn &&
+          {!user.isLoggedIn &&
             <div className="ps-m">
               <button className="button is-primary" onClick={this.handleLogin}>
                 Login
@@ -77,20 +84,21 @@ export class App extends Component<any, Props, State> {
                   <input
                     type="checkbox"
                     ref={input => (this.confirmDialog = input)}
-                  />
-                  {' '} Show Spotify confirm dialog
+                  />{' '}
+                   Show Spotify confirm dialog
                 </label>
               </p>
             </div>}
           {!currentPlaylist &&
-            isLoggedIn &&
+            user.isLoggedIn &&
             <MyPlaylistsView
+              user={user.data}
               playlists={playlists}
-              current={currentPlaylist}
               getTracks={this.getPlaylistTracks}
+              onDelete={this.handleDeletePlaylists}
             />}
           {currentPlaylist &&
-            isLoggedIn &&
+            user.isLoggedIn &&
             <PlaylistView
               playlist={currentPlaylist}
               handleBackClick={this.handleBackClick}
@@ -101,10 +109,8 @@ export class App extends Component<any, Props, State> {
   }
 }
 
-const mapStateToProps = (state: AppState, props: Props) => ({
-  isLoggedIn: state.user.isLoggedIn,
-  user: state.user.data,
-  userPending: state.user.isPending,
+const mapStateToProps = (state: AppState) => ({
+  user: state.user,
   playlists: Selectors.playlists(state),
   playlistsPending: Selectors.playlistsPending(state),
 });

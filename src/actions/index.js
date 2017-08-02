@@ -2,6 +2,7 @@
 import type {
   Paging,
   PlaylistTrack,
+  ApiError,
   SimplePlaylist,
   User,
 } from '../types/spotify';
@@ -50,6 +51,17 @@ export type ReceivePlaylistsAction = {
   pagedPlaylists: Paging<SimplePlaylist>,
 };
 
+export type DeletePlaylistsAction = {
+  type: 'DELETE_PLAYLISTS',
+  playlists: Playlist[],
+};
+
+export type PlaylistDeleteErrorAction = {
+  type: 'PLAYLIST_DELETE_ERROR',
+  playlist: Playlist,
+  error: ApiError,
+};
+
 export type Action =
   | FetchUserAction
   | ReceiveUserAction
@@ -60,6 +72,8 @@ export type Action =
   | FetchTracksResAction
   | CreatePlaylistsAction
   | PlaylistCreatedAction
+  | DeletePlaylistsAction
+  | PlaylistDeleteErrorAction
   | ScrambleTracksAction;
 
 export const fetchUser = (): FetchUserAction => {
@@ -112,4 +126,20 @@ export const receivePlaylists = (
 ): ReceivePlaylistsAction => ({
   type: 'FETCH_PLAYLISTS_RES',
   pagedPlaylists,
+});
+
+export const deletePlaylists = (
+  playlists: Playlist[],
+): DeletePlaylistsAction => ({
+  type: 'DELETE_PLAYLISTS',
+  playlists,
+});
+
+export const playlistDeleteError = (
+  playlist: Playlist,
+  error: ApiError,
+): PlaylistDeleteErrorAction => ({
+  type: 'PLAYLIST_DELETE_ERROR',
+  playlist,
+  error,
 });

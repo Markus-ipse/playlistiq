@@ -100,13 +100,14 @@ export function spotifyReq(url: string, options: any = {}) {
         ...options.headers,
       },
     })
-    .then(res => res.json())
-    .then(res => {
-      if (res.error && res.error.status === 401) {
-        console.info(res.error);
+    .then(response => response.text())
+    .then(responseText => (responseText ? JSON.parse(responseText) : {}))
+    .then(data => {
+      if (data && data.error && data.error.status === 401) {
+        console.info(data.error);
         localStorage.removeItem(tokenKey);
       }
-      return res;
+      return data;
     });
 }
 

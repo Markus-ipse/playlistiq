@@ -43,6 +43,11 @@ table.ps-no-wrap td {
   cursor: pointer; /* Move elsewhere */
 }
 
+.hiddenCol {
+  visibility: collapse;
+  width: 0 !important;
+}
+
 /** Utils **/
 
 /**** Whitespace ****/
@@ -57,6 +62,10 @@ table.ps-no-wrap td {
 /***** End Whitespace ****/
 
 /***** Flex ****/
+
+.ps-justify-content-end {
+  justify-content: flex-end;
+}
 
 .ps-align-self-end {
   align-self: flex-end !important;

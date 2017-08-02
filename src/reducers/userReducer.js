@@ -3,11 +3,19 @@ import type { User } from '../types/spotify';
 import type { Action } from '../actions/index';
 import { isLoggedIn } from '../api/spotifyAuth';
 
-export type UserState = {
-  isLoggedIn: boolean,
-  data: ?User,
+type LoggedInUser = {
+  isLoggedIn: true,
+  data: User,
+  isPending: false,
+};
+
+type NonLoggedInUser = {
+  isLoggedIn: false,
+  data: null,
   isPending: boolean,
 };
+
+export type UserState = LoggedInUser | NonLoggedInUser;
 
 const initialState: UserState = {
   data: null,
