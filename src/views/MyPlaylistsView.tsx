@@ -6,16 +6,16 @@ import { Playlist } from '../types/index';
 import { User } from '../types/spotify';
 
 interface Props {
-  user: User,
-  playlists: Playlist[],
-  getTracks: (p: Playlist) => void,
-  onDelete: (pl: Playlist[]) => void,
+  user: User;
+  playlists: Playlist[];
+  getTracks: (p: Playlist) => void;
+  onDelete: (pl: Playlist[]) => void;
 }
 
 interface State {
-  editMode: boolean,
-  confirmDialogOpen: boolean,
-  selected: Playlist[],
+  editMode: boolean;
+  confirmDialogOpen: boolean;
+  selected: Playlist[];
 }
 
 class MyPlaylistsView extends React.Component<Props, State> {
@@ -73,7 +73,6 @@ class MyPlaylistsView extends React.Component<Props, State> {
             title="Confirm deletion"
             confirmText="Delete"
             onConfirm={() => {
-              console.log('Delete that shit', selected);
               onDelete(selected);
               this.closeConfirm();
             }}
@@ -81,11 +80,11 @@ class MyPlaylistsView extends React.Component<Props, State> {
           >
             Are you sure you want to delete:
             <ul>
-              {selected.map(pl => (
+              {selected.map(pl =>
                 <li key={pl.id}>
                   {pl.name}
-                </li>
-              ))}
+                </li>,
+              )}
             </ul>
           </ConfirmDialog>}
       </section>

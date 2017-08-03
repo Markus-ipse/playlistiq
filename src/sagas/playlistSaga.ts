@@ -1,6 +1,7 @@
 import { call, Effect, put, select, takeLatest } from 'redux-saga/effects';
 import {
-  playlistCreated, playlistDeleteError,
+  playlistCreated,
+  playlistDeleteError,
   receivePlaylists,
   unauthorized,
 } from '../actions/index';
@@ -8,10 +9,7 @@ import * as Spotify from '../api/spotifyAPI';
 import * as Select from '../reducers/selectors';
 import { chunkArray } from '../util/helpers';
 
-import {
-CreatePlaylistsAction,
-DeletePlaylistsAction,
-} from '../actions/index';
+import { CreatePlaylistsAction, DeletePlaylistsAction } from '../actions/index';
 import { isApiError } from '../api/helpers';
 import { AddTracksRes, SimplePlaylist, User } from '../types/spotify';
 
@@ -50,7 +48,9 @@ function* addTracks(userId: string, playlistId: string, trackURIs: string[]) {
   // Todo: handle errors
 }
 
-function* createPlaylists(action: CreatePlaylistsAction): IterableIterator<Effect | Effect[]> {
+function* createPlaylists(
+  action: CreatePlaylistsAction,
+): IterableIterator<Effect | Effect[]> {
   const { groupedTracks, playlist } = action;
   const user: User = yield select(Select.user);
 
@@ -68,7 +68,9 @@ function* createPlaylists(action: CreatePlaylistsAction): IterableIterator<Effec
   }
 }
 
-function* deletePlaylists(action: DeletePlaylistsAction): IterableIterator<Effect> {
+function* deletePlaylists(
+  action: DeletePlaylistsAction,
+): IterableIterator<Effect> {
   for (const pl of action.playlists) {
     const response = yield call(Spotify.unfollowPlaylist, pl.owner.id, pl.id);
     console.log('Deleted', pl.name, response);

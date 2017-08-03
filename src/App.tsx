@@ -18,17 +18,17 @@ import { Dispatch, Playlist } from './types/index';
 import './App.css';
 
 interface StateProps {
-  user: UserState,
-  playlists: Playlist[],
-  playlistsPending: boolean,
+  user: UserState;
+  playlists: Playlist[];
+  playlistsPending: boolean;
 }
 
 type Props = StateProps & {
-  dispatch: Dispatch,
+  dispatch: Dispatch;
 };
 
 interface State {
-  currentPlaylist: Playlist | null,
+  currentPlaylist: Playlist | null;
 }
 
 export class App extends React.Component<Props, State> {
@@ -78,22 +78,22 @@ export class App extends React.Component<Props, State> {
                 <label className="checkbox">
                   <input
                     type="checkbox"
-                    ref={input => this.confirmDialog = input}
+                    ref={input => (this.confirmDialog = input)}
                   />
-                  {' '}
                   Show Spotify confirm dialog
                 </label>
               </p>
             </div>}
-          {!currentPlaylist && user.data &&
-          <MyPlaylistsView
+          {!currentPlaylist &&
+            user.data &&
+            <MyPlaylistsView
               user={user.data}
               playlists={playlists}
               getTracks={this.getPlaylistTracks}
               onDelete={this.handleDeletePlaylists}
             />}
           {currentPlaylist &&
-            user.isLoggedIn &&
+            user.data &&
             <PlaylistView
               playlist={currentPlaylist}
               handleBackClick={this.handleBackClick}

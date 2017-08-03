@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 interface Props {
-  children: any,
-  title: string,
-  confirmText?: string,
-  cancelText?: string,
-  onConfirm: () => void,
-  onCancel: () => void,
+  children: Array<string | JSX.Element>;
+  title: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 const ConfirmDialog = ({

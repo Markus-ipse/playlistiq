@@ -102,7 +102,7 @@ export function spotifyReq(url: string, options: RequestInit = {}) {
     })
     .then(response => response.text())
     .then(responseText => (responseText ? JSON.parse(responseText) : null))
-    .then((data) => {
+    .then(data => {
       if (data && data.error && data.error.status === 401) {
         console.info(data.error);
         localStorage.removeItem(tokenKey);

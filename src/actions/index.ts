@@ -9,56 +9,63 @@ import {
 } from '../types/spotify';
 
 export interface FetchTracksAction {
-  type: 'FETCH_TRACKS_REQ',
-  playlist: Playlist,
+  type: 'FETCH_TRACKS_REQ';
+  playlist: Playlist;
 }
 export interface FetchTracksResAction {
-  type: 'FETCH_TRACKS_RES',
-  pagedTracks: Paging<PlaylistTrack>,
-  playlistId: string,
+  type: 'FETCH_TRACKS_RES';
+  pagedTracks: Paging<PlaylistTrack>;
+  playlistId: string;
 }
 
 export interface ScrambleTracksAction {
-  type: 'SCRAMBLE_TRACKS',
-  playlist: Playlist,
+  type: 'SCRAMBLE_TRACKS';
+  playlist: Playlist;
 }
 
 export interface CreatePlaylistsAction {
-  type: 'CREATE_PLAYLISTS',
-  playlist: SimplePlaylist,
-  groupedTracks: TrackWithMeta[][],
+  type: 'CREATE_PLAYLISTS';
+  playlist: SimplePlaylist;
+  groupedTracks: TrackWithMeta[][];
 }
 
 export interface PlaylistCreatedAction {
-  type: 'PLAYLIST_CREATED',
-  playlist: SimplePlaylist,
+  type: 'PLAYLIST_CREATED';
+  playlist: SimplePlaylist;
 }
 
 export interface ReqUnauthorizedAction {
-  type: 'REQUEST_UNAUTHORIZED',
-  message: string,
+  type: 'REQUEST_UNAUTHORIZED';
+  message: string;
 }
 
-export interface FetchUserAction { type: 'FETCH_USER_REQ' }
+export interface FetchUserAction {
+  type: 'FETCH_USER_REQ';
+}
 
-export interface ReceiveUserAction { type: 'FETCH_USER_RES', user: User }
+export interface ReceiveUserAction {
+  type: 'FETCH_USER_RES';
+  user: User;
+}
 
-export interface FetchPlaylistsAction { type: 'FETCH_PLAYLISTS_REQ' }
+export interface FetchPlaylistsAction {
+  type: 'FETCH_PLAYLISTS_REQ';
+}
 
 export interface ReceivePlaylistsAction {
-  type: 'FETCH_PLAYLISTS_RES',
-  pagedPlaylists: Paging<SimplePlaylist>,
+  type: 'FETCH_PLAYLISTS_RES';
+  pagedPlaylists: Paging<SimplePlaylist>;
 }
 
 export interface DeletePlaylistsAction {
-  type: 'DELETE_PLAYLISTS',
-  playlists: Playlist[],
+  type: 'DELETE_PLAYLISTS';
+  playlists: Playlist[];
 }
 
 export interface PlaylistDeleteErrorAction {
-  type: 'PLAYLIST_DELETE_ERROR',
-  playlist: Playlist,
-  error: ApiError,
+  type: 'PLAYLIST_DELETE_ERROR';
+  playlist: Playlist;
+  error: ApiError;
 }
 
 export type Action =

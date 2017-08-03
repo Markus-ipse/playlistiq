@@ -14,10 +14,10 @@ import { Track } from '../types/spotify';
 import './TrackTable.css';
 
 interface Props {
-  tracks: TrackWithMeta[],
-  partNumber: number | null,
-  isActive: boolean,
-  onHeaderClick: (partNumber: number |null) => void,
+  tracks: TrackWithMeta[];
+  partNumber: number | null;
+  isActive: boolean;
+  onHeaderClick: (partNumber: number | null) => void;
 }
 
 const getArtist = (track: Track) => track.artists.map(a => a.name).join(', ');
@@ -40,7 +40,7 @@ export function TrackTable({
               top: 0,
             },
           }),
-        100
+        100,
       );
     }
     onHeaderClick(partNumber);
@@ -78,7 +78,7 @@ export function TrackTable({
             </tr>
           </thead>
           <tbody>
-            {tracks.map((item, i) => (
+            {tracks.map((item, i) =>
               <tr key={item.id}>
                 <td>
                   {i + 1}
@@ -100,8 +100,8 @@ export function TrackTable({
                 <td>
                   <SpotifyLink uri={item.track.uri} />
                 </td>
-              </tr>
-            ))}
+              </tr>,
+            )}
           </tbody>
         </table>}
     </div>

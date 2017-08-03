@@ -3,9 +3,9 @@ import { isLoggedIn } from '../api/spotifyAuth';
 import { User } from '../types/spotify';
 
 export interface UserState {
-  data: User | null,
-  isPending: boolean,
-  isLoggedIn: boolean,
+  data: User | null;
+  isPending: boolean;
+  isLoggedIn: boolean;
 }
 
 const initialState: UserState = {
@@ -16,7 +16,7 @@ const initialState: UserState = {
 
 export function userReducer(
   state: UserState = initialState,
-  action: Action
+  action: Action,
 ): UserState {
   switch (action.type) {
     case 'FETCH_USER_REQ':

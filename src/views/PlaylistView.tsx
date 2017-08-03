@@ -13,24 +13,24 @@ import { TrackWithMeta } from '../reducers/selectors';
 import { Dispatch, Playlist } from '../types/index';
 
 interface OwnProps {
-  playlist: Playlist,
-  handleBackClick: () => void,
+  playlist: Playlist;
+  handleBackClick: () => void;
 }
 
 type StateProps = {
-  isPending: boolean,
-  tracks: TrackWithMeta[],
-  isScrambled: boolean,
+  isPending: boolean;
+  tracks: TrackWithMeta[];
+  isScrambled: boolean;
 } & OwnProps;
 
 interface DispatchProps {
-  scrambleTracks: () => Action,
-  createPlaylists: (splitTracks: TrackWithMeta[][]) => Action,
+  scrambleTracks: () => Action;
+  createPlaylists: (splitTracks: TrackWithMeta[][]) => Action;
 }
 
 interface State {
-  playlistCount: number,
-  expanded: number[],
+  playlistCount: number;
+  expanded: number[];
 }
 
 type Props = StateProps & DispatchProps;
@@ -72,9 +72,10 @@ export class PlaylistView extends React.Component<Props, State> {
     if (!tracks) {
       return <p>No tracks</p>;
     }
-    const splitTracks = isPending || !tracks.length
-      ? [tracks]
-      : chunkArray(tracks, playlistCount);
+    const splitTracks =
+      isPending || !tracks.length
+        ? [tracks]
+        : chunkArray(tracks, playlistCount);
 
     const isSplit = splitTracks.length > 1;
 
@@ -116,15 +117,15 @@ export class PlaylistView extends React.Component<Props, State> {
             Create playlist(s)
           </button>
         </div>
-        {splitTracks.map((newTrackList, i) => (
+        {splitTracks.map((newTrackList, i) =>
           <TrackTable
             isActive={expanded.includes(i + 1)}
             onHeaderClick={this.toggleExpanded}
             key={'table' + i}
             partNumber={isSplit ? i + 1 : null}
             tracks={newTrackList}
-          />
-        ))}
+          />,
+        )}
       </div>
     );
   }
@@ -139,7 +140,7 @@ const mapStateToProps = (state: AppState, props: OwnProps): StateProps => ({
 
 const mapDispatchToProps = (
   dispatch: Dispatch,
-  ownProps: OwnProps
+  ownProps: OwnProps,
 ): DispatchProps => ({
   scrambleTracks: () => dispatch(Actions.scrambleTracks(ownProps.playlist)),
   createPlaylists: splitTracks =>

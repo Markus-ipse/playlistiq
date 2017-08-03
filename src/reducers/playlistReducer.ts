@@ -5,13 +5,13 @@ import { combineReducers } from 'redux';
 import { CreatedPlaylist } from '../types/index';
 
 export interface FetchedPlaylistsState {
-  data: Paging<SimplePlaylist> | null,
-  isPending: boolean,
+  data: Paging<SimplePlaylist> | null;
+  isPending: boolean;
 }
 
 export interface PlaylistState {
-  fetchedPlaylists: FetchedPlaylistsState,
-  createdPlaylist: CreatedPlaylist[],
+  fetchedPlaylists: FetchedPlaylistsState;
+  createdPlaylist: CreatedPlaylist[];
 }
 
 function createdPlaylistsReducer(

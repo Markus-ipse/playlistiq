@@ -1,1 +1,1 @@
-declare module 'scroll-into-view'
+declare module 'scroll-into-view';

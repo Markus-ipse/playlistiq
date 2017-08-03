@@ -9,12 +9,12 @@ import * as classNames from 'classnames';
 import './PlaylistTable.css';
 
 interface Props {
-  user: User,
-  playlists: Playlist[],
-  getTracks: (p: Playlist) => void,
-  editMode: boolean,
-  multiMode?: boolean,
-  showConfirm: (pl: Playlist[]) => void,
+  user: User;
+  playlists: Playlist[];
+  getTracks: (p: Playlist) => void;
+  editMode: boolean;
+  multiMode?: boolean;
+  showConfirm: (pl: Playlist[]) => void;
 }
 
 export const PlaylistTable = ({
@@ -24,7 +24,7 @@ export const PlaylistTable = ({
   editMode,
   multiMode,
   showConfirm,
-}: Props) => (
+}: Props) =>
   <table className="table is-striped ps-no-wrap PlaylistTable">
     <colgroup>
       <col
@@ -45,7 +45,7 @@ export const PlaylistTable = ({
       </tr>
     </thead>
     <tbody>
-      {playlists.map(pl => (
+      {playlists.map(pl =>
         <tr key={pl.id}>
           <td className="PlaylistTable-checkboxCell">
             {pl.owner.id === user.id &&
@@ -64,8 +64,7 @@ export const PlaylistTable = ({
           <td>
             <SpotifyLink uri={pl.uri} />
           </td>
-        </tr>
-      ))}
+        </tr>,
+      )}
     </tbody>
-  </table>
-);
+  </table>;
