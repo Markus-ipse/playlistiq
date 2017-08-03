@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length no-any
 
-export type Paging<T> = {
+export interface Paging<T> {
   href: string, // A link to the Web API endpoint returning the full result of the request.
   items: T[], // The requested data.
   limit: number, // The maximum number of items in the response (as set in the query or by default).
@@ -8,15 +8,15 @@ export type Paging<T> = {
   offset: number, // The offset of the items returned (as set in the query or by default).
   previous: string, // URL to the previous page of items. (null if none)
   total: number, // The total number of items available to return.
-};
+}
 
-export type Image = {
+export interface Image {
   height: number, // The image height in pixels. If unknown: null or not returned.
   url: string, // The source URL of the image.
   width: number, // The image width in pixels. If unknown: null or not returned.
-};
+}
 
-export type User = {
+export interface User {
   display_name: string, // The name displayed on the user's profile. null if not available.
   external_urls: any, // Known public external URLs for this user.
   followers: any, // Information about the followers of this user.
@@ -25,7 +25,7 @@ export type User = {
   images: Image[], // The user's profile image.
   type: 'user', // The object type: "user"
   uri: string, // The Spotify URI for this user.
-};
+}
 
 export interface SimplePlaylist {
   collaborative: boolean; // true if the owner allows other users to modify the playlist.
@@ -42,16 +42,16 @@ export interface SimplePlaylist {
   uri: string; // The Spotify URI for the playlist.
 }
 
-export type SimpleArtist = {
+export interface SimpleArtist {
   external_urls: any, // Known external URLs for this artist.
   href: string, // A link to the Web API endpoint providing full details of the artist.
   id: string, // The Spotify ID for the artist.
   name: string, // The name of the artist
   type: string, // The object type: "artist"
   uri: string, // The Spotify URI for the artist.
-};
+}
 
-export type SimpleAlbum = {
+export interface SimpleAlbum {
   album_type: string, // The type of the album: one of "album", "single", or "compilation".
   artists: SimpleArtist[], // The artists of the album. Each artist object includes a link in href to more detailed information about the artist.
   available_markets: string[], // The markets in which the album is available: ISO 3166-1 alpha-2 country codes. Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
@@ -62,9 +62,9 @@ export type SimpleAlbum = {
   name: string, // The name of the album. In case of an album takedown, the value may be an empty string.
   type: string, // The object type: "album"
   uri: string, // The Spotify URI for the album.
-};
+}
 
-export type Track = {
+export interface Track {
   album: SimpleAlbum, // The album on which the track appears. The album object includes a link in href to full information about the album.
   artists: SimpleArtist[], // The artists who performed the track. Each artist object includes a link in href to more detailed information about the artist.
   available_markets: string[], // A list of the countries in which the track can be played, identified by their ISO 3166-1 alpha-2 code.
@@ -83,14 +83,14 @@ export type Track = {
   track_number: number, // The number of the track. If an album has several discs, the track number is the number on the specified disc.
   type: string, // The object type: "track".
   uri: string, // The Spotify URI for the track.
-};
+}
 
-export type PlaylistTrack = {
+export interface PlaylistTrack {
   added_at: string, // The date and time the track was added.Note that some very old playlists may return null in this field.
   added_by: User, // The Spotify user who added the track.Note that some very old playlists may return null in this field.
   is_local: boolean, // Whether this track is a local file or not.
   track: Track, // Information about the track.
-};
+}
 
 export interface ApiError {
   error: {

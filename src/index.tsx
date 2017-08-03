@@ -10,8 +10,8 @@ import 'bulma/css/bulma.css';
 import './index.css';
 
 import App from './App';
-import { AppState, appStateReducers } from './reducers';
-import { rootSaga } from './sagas';
+import { AppState, appStateReducers } from './reducers/index';
+import { rootSaga } from './sagas/index';
 
 const rootReducer = combineReducers<AppState>(appStateReducers);
 
