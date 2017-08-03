@@ -4,6 +4,13 @@
   "private": true,
   "homepage": "https://Markus-ipse.github.io/playlistiq",
   "dependencies": {
+    "@types/classnames": "^2.2.0",
+    "@types/jest": "^20.0.5",
+    "@types/node": "^8.0.19",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^15.5.1",
+    "@types/react-redux": "^4.4.47",
+    "@types/recompose": "^0.23.3",
     "bulma": "^0.4.3",
     "classnames": "^2.2.5",
     "date-fns": "^1.28.5",
@@ -11,6 +18,7 @@
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "react-responsive": "^1.3.4",
+    "react-scripts-ts": "2.5.0",
     "recompose": "^0.24.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
@@ -18,23 +26,19 @@
     "scroll-into-view": "^1.9.0"
   },
   "devDependencies": {
-    "eslint-plugin-flowtype": "^2.35.0",
-    "flow-bin": "^0.51.1",
     "gh-pages": "^1.0.0",
     "prettier": "^1.5.3",
-    "react-scripts": "^1.0.10"
+    "react-scripts": "^1.0.10",
+    "tslint": "^5.5.0",
+    "tslint-config-prettier": "^1.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "flow": "flow",
-    "lint": "eslint ./src",
-    "eject": "react-scripts eject",
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "lint": "tslint \"src/**/*.ts\" --project tsconfig.json --type-check",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   }
 }
