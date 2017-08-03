@@ -20,7 +20,7 @@ export function userReducer(
 ): UserState {
   switch (action.type) {
     case 'FETCH_USER_REQ':
-      return { data: null, isLoggedIn: false, isPending: true };
+      return { ...state, isPending: true };
 
     case 'FETCH_USER_RES':
       return { data: action.user, isPending: false, isLoggedIn: true };
