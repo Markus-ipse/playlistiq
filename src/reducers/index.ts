@@ -3,9 +3,9 @@ import { tracksReducer, TracksState } from './tracksReducer';
 import { userReducer, UserState } from './userReducer';
 
 export interface AppState {
-  user: UserState,
-  playlists: PlaylistState,
-  tracks: TracksState,
+  user: UserState;
+  playlists: PlaylistState;
+  tracks: TracksState;
 }
 
 export const appStateReducers = {

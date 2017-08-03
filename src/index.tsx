@@ -18,15 +18,15 @@ const rootReducer = combineReducers<AppState>(appStateReducers);
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(sagaMiddleware) as Function), // tslint:disable-line:ban-types
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware) as Function), // tslint:disable-line:ban-types
 );
 
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('root') as HTMLElement,
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root') as HTMLElement,
 );

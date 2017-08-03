@@ -18,17 +18,17 @@ export function getUserPlaylists(): Promise<Paging<SimplePlaylist>> {
 export function getPlaylistTracks(
   userId: string,
   playlistId: string,
-  offset: number = 0
+  offset: number = 0,
 ): Promise<Paging<PlaylistTrack>> {
   return spotifyReq(
-    `/v1/users/${userId}/playlists/${playlistId}/tracks?offset=${offset}&limit=100`
+    `/v1/users/${userId}/playlists/${playlistId}/tracks?offset=${offset}&limit=100`,
   );
 }
 
 // Technically returns a full Playlist object, but the difference is not important for the time being
 export function createPlaylist(
   userId: string,
-  name: string
+  name: string,
 ): Promise<SimplePlaylist> {
   return spotifyPOST(`/v1/users/${userId}/playlists`, { name });
 }
@@ -36,7 +36,7 @@ export function createPlaylist(
 export function addTracksToPlaylist(
   userId: string,
   playlistId: string,
-  trackURIs: string[]
+  trackURIs: string[],
 ): Promise<{ snapshot_id: string }> {
   return spotifyPOST(`/v1/users/${userId}/playlists/${playlistId}/tracks`, {
     uris: trackURIs,
@@ -45,9 +45,9 @@ export function addTracksToPlaylist(
 
 export function unfollowPlaylist(
   ownerId: string,
-  playlistId: string
+  playlistId: string,
 ): Promise<null | ApiError> {
   return spotifyDELETE(
-    `/v1/users/${ownerId}/playlists/${playlistId}/followers`
+    `/v1/users/${ownerId}/playlists/${playlistId}/followers`,
   );
 }

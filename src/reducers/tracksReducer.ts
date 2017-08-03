@@ -4,27 +4,29 @@ import { Paging, PlaylistTrack, Track, User } from '../types/spotify';
 import { shuffle } from '../util/shuffle';
 
 export interface TrackMeta {
-  id: number,
-  trackId: string,
-  addedAt: string,
-  addedBy: User,
+  id: number;
+  trackId: string;
+  addedAt: string;
+  addedBy: User;
 }
 
 export interface PagesState {
   [key: string]: {
-    tracks: TrackMeta[],
-    total?: number,
-    next?: string,
-    lastOffset?: number,
-    newOrder?: TrackMeta[],
-  },
+    tracks: TrackMeta[];
+    total?: number;
+    next?: string;
+    lastOffset?: number;
+    newOrder?: TrackMeta[];
+  };
 }
 
-interface EntitiesState { [key: string]: Track }
+interface EntitiesState {
+  [key: string]: Track;
+}
 
 export interface TracksState {
-  entities: EntitiesState,
-  pages: PagesState,
+  entities: EntitiesState;
+  pages: PagesState;
 }
 
 function entities(state: EntitiesState = {}, action: Action) {
@@ -52,7 +54,7 @@ const updateTracks = (tracks: TrackMeta[], items: PlaylistTrack[]) => {
       id: idx++,
       addedAt: item.added_at,
       addedBy: item.added_by,
-    }))
+    })),
   );
 };
 

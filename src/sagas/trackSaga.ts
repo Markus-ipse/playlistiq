@@ -10,7 +10,10 @@ import { Playlist } from '../types/index';
 function* fetchPlaylistTracks({
   playlist,
   offset,
-}: { offset: number, playlist: Playlist }): IterableIterator<Effect> {
+}: {
+  offset: number;
+  playlist: Playlist;
+}): IterableIterator<Effect> {
   const res = yield call(
     Spotify.getPlaylistTracks,
     playlist.owner.id,
@@ -36,7 +39,9 @@ function* fetchPlaylistTracks({
 
 const SPOTIFY_PAGING_SIZE = 100;
 
-function* fetchTracks({ playlist }: FetchTracksAction): IterableIterator<Effect> {
+function* fetchTracks({
+  playlist,
+}: FetchTracksAction): IterableIterator<Effect> {
   yield call(fetchPlaylistTracks, { playlist, offset: 0 });
 
   const playlistTracks = yield select(

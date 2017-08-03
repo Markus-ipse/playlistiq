@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Action } from '../actions/index';
 
 interface Props {
-  outputCount: number,
-  min: number,
-  max: number,
-  increment: () => void,
-  decrement: () => void,
-  scramble: () => Action,
-  disabled: boolean,
+  outputCount: number;
+  min: number;
+  max: number;
+  increment: () => void;
+  decrement: () => void;
+  scramble: () => Action;
+  disabled: boolean;
 }
 
 export function ScrambleOptions({

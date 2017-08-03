@@ -3,10 +3,10 @@ import { SimplePlaylist, Track, User } from '../types/spotify';
 import { AppState } from './index';
 
 export interface TrackWithMeta {
-  id: number,
-  track: Track,
-  addedAt: string,
-  addedBy: User,
+  id: number;
+  track: Track;
+  addedAt: string;
+  addedBy: User;
 }
 
 const emptyArr: TrackWithMeta[] = [];
@@ -51,7 +51,7 @@ const createdPlaylists = (state: AppState): CreatedPlaylist[] =>
   state.playlists.createdPlaylist;
 
 export const playlists = (state: AppState): Playlist[] =>
-    fetchedPlaylists(state).concat(createdPlaylists(state));
+  fetchedPlaylists(state).concat(createdPlaylists(state));
 
 export const tracksPending = (state: AppState, playlistId: string) =>
   playlistTrackPages(state, playlistId).next !== null;
