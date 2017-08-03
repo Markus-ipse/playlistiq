@@ -48,7 +48,7 @@ const fetchedPlaylists = (state: AppState): SimplePlaylist[] =>
     : [];
 
 const createdPlaylists = (state: AppState): CreatedPlaylist[] =>
-  state.playlists.createdPlaylist;
+  state.playlists.createdPlaylists;
 
 export const playlists = (state: AppState): Playlist[] =>
   fetchedPlaylists(state).concat(createdPlaylists(state));

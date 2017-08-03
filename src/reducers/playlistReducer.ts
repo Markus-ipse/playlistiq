@@ -11,7 +11,7 @@ export interface FetchedPlaylistsState {
 
 export interface PlaylistState {
   fetchedPlaylists: FetchedPlaylistsState;
-  createdPlaylist: CreatedPlaylist[];
+  createdPlaylists: CreatedPlaylist[];
 }
 
 function createdPlaylistsReducer(
@@ -46,5 +46,5 @@ function fetchedPlaylistsReducer(
 
 export const playlistReducer = combineReducers({
   fetchedPlaylists: fetchedPlaylistsReducer,
-  createdPlaylist: createdPlaylistsReducer,
+  createdPlaylists: createdPlaylistsReducer,
 });
