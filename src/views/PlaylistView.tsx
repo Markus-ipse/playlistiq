@@ -5,12 +5,13 @@ import * as Actions from '../actions/index';
 import { ScrambleOptions } from '../components/ScrambleOptions';
 import { TrackTable } from '../components/TrackTable';
 import * as Select from '../reducers/selectors';
-import { chunkArray, getTotalPlayTime } from '../util/helpers';
+import { getTotalPlayTime } from '../util/helpers';
 
 import { Action } from '../actions/index';
 import { AppState } from '../reducers/index';
 import { TrackWithMeta } from '../reducers/selectors';
 import { Dispatch, Playlist } from '../types/index';
+import { chunkArray } from '../util/chunkArray';
 
 interface OwnProps {
   playlist: Playlist;
