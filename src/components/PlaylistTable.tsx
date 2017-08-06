@@ -54,7 +54,7 @@ export const PlaylistTable = ({
                     <input type="checkbox" />
                   </label>
                 : <span
-                    className="delete"
+                    className="delete ps-danger-bg"
                     onClick={() => showConfirm([pl])}
                   />)}
           </td>

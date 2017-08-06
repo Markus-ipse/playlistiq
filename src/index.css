@@ -62,9 +62,9 @@ table.ps-no-wrap td {
   margin-top: 1rem;
 }
 
-/***** End Whitespace ****/
+/**** End Whitespace ****/
 
-/***** Flex ****/
+/**** Flex ****/
 
 .ps-justify-content-end {
   justify-content: flex-end;
@@ -78,4 +78,9 @@ table.ps-no-wrap td {
   flex-shrink: 1 !important;
 }
 
-/***** End Flex ****/
+/**** End Flex ****/
+
+/**** Colors ****/
+.ps-danger-bg {
+  background-color: #d64848;
+}
