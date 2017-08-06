@@ -1,6 +1,7 @@
 import { CreatedPlaylist, Playlist } from '../types/index';
 import { SimplePlaylist, Track, User } from '../types/spotify';
 import { AppState } from './index';
+import { DeletePlaylistsState } from './playlistReducer';
 
 export interface TrackWithMeta {
   id: number;
@@ -50,8 +51,15 @@ const fetchedPlaylists = (state: AppState): SimplePlaylist[] =>
 const createdPlaylists = (state: AppState): CreatedPlaylist[] =>
   state.playlists.createdPlaylists;
 
+const deletedPlaylists = (state: AppState): DeletePlaylistsState =>
+  state.playlists.deletedPlaylists;
+
 export const playlists = (state: AppState): Playlist[] =>
-  fetchedPlaylists(state).concat(createdPlaylists(state));
+    [...createdPlaylists(state), ...fetchedPlaylists(state)]
+    .filter(pl => {
+      const deletedPlaylist = deletedPlaylists(state)[pl.id];
+      return !deletedPlaylist || deletedPlaylist.error;
+    });
 
 export const tracksPending = (state: AppState, playlistId: string) =>
   playlistTrackPages(state, playlistId).next !== null;

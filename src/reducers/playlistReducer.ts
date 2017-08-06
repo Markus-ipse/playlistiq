@@ -1,17 +1,27 @@
 import { Action } from '../actions/index';
-import { Paging, SimplePlaylist } from '../types/spotify';
+import { ApiError, Paging, SimplePlaylist } from '../types/spotify';
 
 import { combineReducers } from 'redux';
-import { CreatedPlaylist } from '../types/index';
+import { CreatedPlaylist, MapOf } from '../types/index';
+import { toMap } from '../util/arrayToMap';
 
 export interface FetchedPlaylistsState {
   data: Paging<SimplePlaylist> | null;
   isPending: boolean;
 }
 
+interface DeletedPlaylist {
+  playlistId: string;
+  success: boolean;
+  error: ApiError | null;
+}
+
+export type DeletePlaylistsState = MapOf<DeletedPlaylist>;
+
 export interface PlaylistState {
   fetchedPlaylists: FetchedPlaylistsState;
   createdPlaylists: CreatedPlaylist[];
+  deletedPlaylists: DeletePlaylistsState;
 }
 
 function createdPlaylistsReducer(
@@ -21,6 +31,31 @@ function createdPlaylistsReducer(
   return action.type === 'PLAYLIST_CREATED'
     ? state.concat({ ...action.playlist, createdByApp: true })
     : state;
+}
+
+function deletedPlaylistsReducer(
+  state: DeletePlaylistsState = {},
+  action: Action,
+): DeletePlaylistsState {
+  switch (action.type) {
+    case 'DELETE_PLAYLISTS':
+      const { playlists } = action;
+      const asMap = toMap(
+        'id',
+        pl => ({ success: false, error: null, playlistId: pl.id }),
+        playlists,
+      );
+      return { ...state, ...asMap };
+
+    case 'PLAYLIST_DELETE_ERROR':
+      const deletedPl = state[action.playlist.id];
+      return {
+        ...state,
+        [action.playlist.id]: { ...deletedPl, error: action.error },
+      };
+    default:
+      return state;
+  }
 }
 
 const initialState: FetchedPlaylistsState = { data: null, isPending: false };
@@ -47,4 +82,5 @@ function fetchedPlaylistsReducer(
 export const playlistReducer = combineReducers({
   fetchedPlaylists: fetchedPlaylistsReducer,
   createdPlaylists: createdPlaylistsReducer,
+  deletedPlaylists: deletedPlaylistsReducer,
 });
