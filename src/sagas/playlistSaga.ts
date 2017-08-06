@@ -11,7 +11,7 @@ import { chunkArray } from '../util/chunkArray';
 
 import { CreatePlaylistsAction, DeletePlaylistsAction } from '../actions/index';
 import { isApiError } from '../api/helpers';
-import { AddTracksRes, SimplePlaylist, User } from '../types/spotify';
+import { AddTracksRes, ApiError, SimplePlaylist, User } from '../types/spotify';
 
 function* fetchUserPlaylists(): IterableIterator<Effect> {
   const res = yield call(Spotify.getUserPlaylists);
@@ -54,7 +54,7 @@ function* createPlaylists(
   const { groupedTracks, playlist } = action;
   const user: User = yield select(Select.user);
 
-  for (const [i, newPL] of Array.from(groupedTracks.entries())) {
+  for (const [i, newPL] of Array.from(groupedTracks.entries()).reverse()) {
     const playlistName = `🔀 ${playlist.name} pt. ${i + 1}`;
     console.log('creating', playlistName);
     const createdPlaylist: SimplePlaylist = yield call(
@@ -72,11 +72,10 @@ function* deletePlaylists(
   action: DeletePlaylistsAction,
 ): IterableIterator<Effect> {
   for (const pl of action.playlists) {
-    const response = yield call(Spotify.unfollowPlaylist, pl.owner.id, pl.id);
-    console.log('Deleted', pl.name, response);
-    if (response.error) {
-      console.log(response.error);
-      yield put(playlistDeleteError(pl, response.error));
+    const response: ApiError | null = yield call(Spotify.unfollowPlaylist, pl.owner.id, pl.id);
+    if (response && response.error) {
+      console.info(response.error);
+      yield put(playlistDeleteError(pl, response));
     }
   }
 }
