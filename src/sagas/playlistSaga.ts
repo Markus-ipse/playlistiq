@@ -7,7 +7,7 @@ import {
 } from '../actions/index';
 import * as Spotify from '../api/spotifyAPI';
 import * as Select from '../reducers/selectors';
-import { chunkArray } from '../util/helpers';
+import { chunkArray } from '../util/chunkArray';
 
 import { CreatePlaylistsAction, DeletePlaylistsAction } from '../actions/index';
 import { isApiError } from '../api/helpers';
