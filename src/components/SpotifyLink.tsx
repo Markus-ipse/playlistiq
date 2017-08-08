@@ -10,7 +10,7 @@ interface Props {
   size?: number;
 }
 
-export const SpotifyLink = ({ uri, size = 16 }: Props) => {
+export const SpotifyLink = ({ uri, size }: Props) => {
   return (
     <a href={uri} onClick={stopPropagation} title="Open in Spotify">
       <Icon type="external" size={size} />

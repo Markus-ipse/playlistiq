@@ -58,9 +58,11 @@ export function TrackTable({
           {isActive && <strong>*</strong>}
         </div>}
       {activeOrSingle &&
-        <table className="table is-narrow is-striped ps-layout-fixed ps-no-wrap">
+        <table className="TrackTable table is-narrow is-striped ps-layout-fixed ps-no-wrap">
           <colgroup>
-            <col className="TrackTable-numCol" />
+            <col
+              style={{ width: tracks.length.toString().length * 9.2 + 16 }}
+            />
             <col />
             <col />
             <col className="TrackTable-dateCol" />
