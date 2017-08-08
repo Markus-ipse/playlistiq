@@ -11,6 +11,7 @@ import { SpotifyLink } from './SpotifyLink';
 import { TrackWithMeta } from '../reducers/selectors';
 import { Track } from '../types/spotify';
 
+import { playTracks } from '../api/spotifyAPI';
 import './TrackTable.css';
 
 interface Props {
@@ -65,12 +66,14 @@ export function TrackTable({
             />
             <col />
             <col />
+            <col />
             <col className="TrackTable-dateCol" />
             <col className="PlaylistTable-spotifyLinkCol" />
           </colgroup>
           <thead>
             <tr>
               <th>#</th>
+              <th />
               <th>Song</th>
               <th>Artist</th>
               <th>Added</th>
@@ -84,6 +87,14 @@ export function TrackTable({
               <tr key={item.id}>
                 <td>
                   {i + 1}
+                </td>
+                <td>
+                  <span
+                    className="icon"
+                    onClick={() => playTracks([item.track.uri])}
+                  >
+                    <Icon type="play" />
+                  </span>
                 </td>
                 <td title={item.track.name}>
                   {item.track.name}
