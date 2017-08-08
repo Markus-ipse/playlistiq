@@ -5,14 +5,19 @@ import {
   SimplePlaylist,
   User,
 } from '../types/spotify';
-import { spotifyDELETE, spotifyPOST, spotifyReq } from './spotifyAuth';
+import {
+  spotifyDELETE,
+  SpotifyGET,
+  spotifyPOST,
+  spotifyPUT,
+} from './spotifyAuth';
 
 export function getUser(): Promise<User> {
-  return spotifyReq('https://api.spotify.com/v1/me');
+  return SpotifyGET('https://api.spotify.com/v1/me');
 }
 
 export function getUserPlaylists(): Promise<Paging<SimplePlaylist>> {
-  return spotifyReq('https://api.spotify.com/v1/me/playlists');
+  return SpotifyGET('https://api.spotify.com/v1/me/playlists');
 }
 
 export function getPlaylistTracks(
@@ -20,7 +25,7 @@ export function getPlaylistTracks(
   playlistId: string,
   offset: number = 0,
 ): Promise<Paging<PlaylistTrack>> {
-  return spotifyReq(
+  return SpotifyGET(
     `/v1/users/${userId}/playlists/${playlistId}/tracks?offset=${offset}&limit=100`,
   );
 }
@@ -50,4 +55,13 @@ export function unfollowPlaylist(
   return spotifyDELETE(
     `/v1/users/${ownerId}/playlists/${playlistId}/followers`,
   );
+}
+
+export function playTracks(trackUris?: string[]) {
+  const options = trackUris ? { uris: trackUris } : null;
+  return spotifyPUT('/v1/me/player/play', options);
+}
+
+export function getCurrentPlayback() {
+  return SpotifyGET('https://api.spotify.com/v1/me/player');
 }

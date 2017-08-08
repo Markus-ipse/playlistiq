@@ -51,8 +51,14 @@ export function login(showDialog: boolean) {
 
   const stateValue = generateRandomString(16);
   window.localStorage.setItem(stateKey, stateValue);
-  const scope =
-    'user-read-private user-read-email playlist-read-private playlist-modify-public';
+  const scope = [
+    'user-read-private',
+    'user-read-email',
+    'playlist-read-private',
+    'playlist-modify-public',
+    'user-modify-playback-state',
+    'user-read-playback-state',
+  ].join(' ');
   let url = 'https://accounts.spotify.com/authorize';
   url += '?response_type=token';
   url += '&client_id=' + encodeURIComponent(clientId);
@@ -88,7 +94,7 @@ if (access_token && (state == null || state !== storedState)) {
 }
 
 const host = 'https://api.spotify.com';
-export function spotifyReq(url: string, options: RequestInit = {}) {
+function spotifyReq(url: string, options: RequestInit = {}) {
   const accessToken = localStorage.getItem(tokenKey) || '';
   const fullUrl = url.includes(host) ? url : host + url;
 
@@ -111,10 +117,19 @@ export function spotifyReq(url: string, options: RequestInit = {}) {
     });
 }
 
+export { spotifyReq as SpotifyGET}
+
 export function spotifyPOST(url: string, data: any) {
   return spotifyReq(url, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
+export function spotifyPUT(url: string, data?: any) {
+  return spotifyReq(url, {
+    method: 'PUT',
     body: JSON.stringify(data),
   });
 }
