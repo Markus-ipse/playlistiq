@@ -25,7 +25,7 @@ export const PlaylistTable = ({
   multiMode,
   showConfirm,
 }: Props) =>
-  <table className="table is-striped ps-no-wrap PlaylistTable">
+  <table className="table is-striped ps-no-wrap ps-layout-fixed">
     <colgroup>
       <col
         className={classNames('PlaylistTable-checkboxCol', {

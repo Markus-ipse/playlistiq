@@ -1,9 +1,4 @@
-.PlaylistTable {
-  table-layout: fixed;
-}
-
 .PlaylistTable-spotifyLinkCol {
-  text-align: center;
   width: 2.3em;
 }
 

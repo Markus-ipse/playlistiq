@@ -12,11 +12,15 @@
 }
 
 .TrackTable-dateCol {
-  width: 6.3rem;
+  visibility: collapse;
+  width: 0;
 }
 
-.TrackTable-spotifyLinkCol {
-  width: 2.3rem;
+@media screen and (min-width: 500px) {
+  .TrackTable-dateCol {
+    width: 6.3rem;
+    visibility: visible;
+  }
 }
 
 .TrackTable-time {
@@ -24,7 +28,7 @@
   display: none;
 }
 
-@media screen and (min-width: 450px) {
+@media screen and (min-width: 650px) {
   .TrackTable-dateCol {
     width: 9rem;
   }

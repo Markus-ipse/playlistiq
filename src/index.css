@@ -37,13 +37,16 @@ body {
   min-width: 66px;
 }
 
-table.ps-no-wrap td {
+.ps-layout-fixed {
+  table-layout: fixed;
+}
+
+table.ps-no-wrap td,
+table.ps-no-wrap th {
   white-space: nowrap;
-  max-width: 1px;
+  /*max-width: 1px;*/
   text-overflow: ellipsis;
   overflow: hidden;
-
-  cursor: pointer; /* Move elsewhere */
 }
 
 .hiddenCol {
@@ -53,7 +56,7 @@ table.ps-no-wrap td {
 
 /** Utils **/
 
-/**** Whitespace ****/
+/****** Whitespace ******/
 .ps-m {
   margin: 1rem;
 }
@@ -62,9 +65,13 @@ table.ps-no-wrap td {
   margin-top: 1rem;
 }
 
+.ps-m-r {
+  margin-right: 1rem;
+}
+
 /**** End Whitespace ****/
 
-/**** Flex ****/
+/****** Flex ******/
 
 .ps-justify-content-end {
   justify-content: flex-end;
@@ -80,7 +87,8 @@ table.ps-no-wrap td {
 
 /**** End Flex ****/
 
-/**** Colors ****/
+/****** Colors ******/
 .ps-danger-bg {
   background-color: #d64848;
 }
+/**** End Colors ****/

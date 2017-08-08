@@ -58,13 +58,13 @@ export function TrackTable({
           {isActive && <strong>*</strong>}
         </div>}
       {activeOrSingle &&
-        <table className="table is-narrow is-striped ps-no-wrap">
+        <table className="table is-narrow is-striped ps-layout-fixed ps-no-wrap">
           <colgroup>
             <col className="TrackTable-numCol" />
             <col />
             <col />
             <col className="TrackTable-dateCol" />
-            <col className="TrackTable-spotifyLinkCol" />
+            <col className="PlaylistTable-spotifyLinkCol" />
           </colgroup>
           <thead>
             <tr>
