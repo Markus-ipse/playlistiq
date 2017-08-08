@@ -13,7 +13,7 @@ import PlaylistView from './views/PlaylistView';
 
 import { AppState } from './reducers/index';
 import { UserState } from './reducers/userReducer';
-import { Dispatch, Playlist } from './types/index';
+import { Playlist } from './types/index';
 
 import './App.css';
 
@@ -23,9 +23,14 @@ interface StateProps {
   playlistsPending: boolean;
 }
 
-type Props = StateProps & {
-  dispatch: Dispatch;
-};
+interface DispatchProps {
+  fetchUser: () => void;
+  fetchPlaylists: () => void;
+  deletePlaylists: (pls: Playlist[]) => void;
+  fetchTracks: (pl: Playlist) => void;
+}
+
+type Props = StateProps & DispatchProps;
 
 interface State {
   currentPlaylist: Playlist | null;
@@ -40,14 +45,15 @@ export class App extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.props.user.isLoggedIn) {
-      this.props.dispatch(fetchUser());
-      this.props.dispatch(fetchPlaylists());
+      this.props.fetchUser();
+      this.props.fetchPlaylists();
+
     }
   }
 
   getPlaylistTracks = (playlist: Playlist) => {
     this.setState({ currentPlaylist: playlist });
-    this.props.dispatch(fetchTracks(playlist));
+    this.props.fetchTracks(playlist);
   };
 
   handleBackClick = () => {
@@ -59,7 +65,7 @@ export class App extends React.Component<Props, State> {
   };
 
   handleDeletePlaylists = (playlists: Playlist[]) => {
-    this.props.dispatch(deletePlaylists(playlists));
+    this.props.deletePlaylists(playlists);
   };
 
   render() {
@@ -104,11 +110,18 @@ export class App extends React.Component<Props, State> {
   }
 }
 
+const boundActions = {
+  fetchUser,
+  fetchPlaylists,
+  fetchTracks,
+  deletePlaylists,
+};
+
 const mapStateToProps = (state: AppState): StateProps => ({
   user: state.user,
   playlists: Selectors.playlists(state),
   playlistsPending: Selectors.playlistsPending(state),
 });
 
-const Connected = connect(mapStateToProps)(App);
+const Connected = connect(mapStateToProps, boundActions)(App);
 export default Connected;
