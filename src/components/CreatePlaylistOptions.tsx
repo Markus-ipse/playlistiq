@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Action } from '../actions/index';
 
 interface Props {
   outputCount: number;
@@ -7,7 +6,6 @@ interface Props {
   max: number;
   increment: () => void;
   decrement: () => void;
-  scramble: () => Action;
   disabled: boolean;
 }
 
@@ -17,7 +15,6 @@ export function ScrambleOptions({
   max,
   increment,
   decrement,
-  scramble,
   disabled,
 }: Props) {
   return (
@@ -55,15 +52,6 @@ export function ScrambleOptions({
           </p>
         </div>
       </div>
-      <p className="control ps-align-self-end">
-        <button
-          disabled={disabled}
-          className="button is-primary"
-          onClick={scramble}
-        >
-          Scramble
-        </button>
-      </p>
     </div>
   );
 }
