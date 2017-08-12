@@ -47,7 +47,6 @@ export class App extends React.Component<Props, State> {
     if (this.props.user.isLoggedIn) {
       this.props.fetchUser();
       this.props.fetchPlaylists();
-
     }
   }
 

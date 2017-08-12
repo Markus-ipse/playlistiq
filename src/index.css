@@ -69,6 +69,10 @@ table.ps-no-wrap th {
   margin-right: 1rem;
 }
 
+.ps-space-r {
+  margin-right: 0.25em;
+}
+
 /**** End Whitespace ****/
 
 /****** Flex ******/

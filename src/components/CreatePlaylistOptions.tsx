@@ -9,7 +9,7 @@ interface Props {
   disabled: boolean;
 }
 
-export function ScrambleOptions({
+export function CreatePlaylistOptions({
   outputCount,
   min,
   max,
