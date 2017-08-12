@@ -1,0 +1,11 @@
+.spotifyActionWrapper {
+  margin-left: -.5rem;
+  margin-right: -.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.spotifyAction {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}

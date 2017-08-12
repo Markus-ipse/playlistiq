@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Action } from '../actions/index';
 import { CreatePlaylistOptions } from './CreatePlaylistOptions';
 import { Icon } from './Icon';
+import './PlaylistActions.css';
 
 interface Props {
   isPending: boolean;
@@ -60,42 +61,44 @@ export class PlaylistActions extends React.Component<Props, State> {
             </button>
           </div>
         </div>
-        <div className="field">
-          <div className="control">
-            <button
-              className="button is-primary"
-              disabled={isPending}
-              onClick={playTracks}
-            >
-              <span className="icon">
-                <Icon type="play" color="#fff" className="ps-space-r" />
-              </span>
-              <span>Play as queue</span>
-            </button>
+        <div className="spotifyActionWrapper">
+          <div className="field spotifyAction">
+            <div className="control">
+              <button
+                className="button is-primary"
+                disabled={isPending}
+                onClick={playTracks}
+              >
+                <span className="icon">
+                  <Icon type="play" color="#fff" className="ps-space-r" />
+                </span>
+                <span>Play as queue</span>
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="field has-addons">
-          <div className="control">
-            <button
-              className="button is-primary"
-              disabled={isPending || createDisabled}
-              onClick={createPlaylists}
-            >
-              <span className="icon">
-                <Icon type="playlistAdd" />
-              </span>{' '}
-              <span>Create playlist(s)</span>
-            </button>
-          </div>
-          <div className="control">
-            <button
-              className={classNames('button', {
-                'is-active': this.state.createOptionsActive,
-              })}
-              onClick={this.toggleCreateOptions}
-            >
-              <Icon type="options" />
-            </button>
+          <div className="field has-addons spotifyAction">
+            <div className="control">
+              <button
+                className="button is-primary"
+                disabled={isPending || createDisabled}
+                onClick={createPlaylists}
+              >
+                <span className="icon">
+                  <Icon type="playlistAdd" />
+                </span>{' '}
+                <span>Create playlist(s)</span>
+              </button>
+            </div>
+            <div className="control">
+              <button
+                className={classNames('button', {
+                  'is-active': this.state.createOptionsActive,
+                })}
+                onClick={this.toggleCreateOptions}
+              >
+                <Icon type="options" />
+              </button>
+            </div>
           </div>
         </div>
         {this.state.createOptionsActive &&
