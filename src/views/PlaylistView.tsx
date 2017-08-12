@@ -1,16 +1,14 @@
-import * as classNames from 'classnames';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
 import * as Actions from '../actions/index';
-import { CreatePlaylistOptions } from '../components/CreatePlaylistOptions';
 import { TrackTable } from '../components/TrackTable';
 import * as Select from '../reducers/selectors';
 import { getTotalPlayTime } from '../util/helpers';
 
 import { Action } from '../actions/index';
 import { playTracks } from '../api/spotifyAPI';
-import { Icon } from '../components/Icon';
+import { PlaylistActions } from '../components/PlaylistActions';
 import { AppState } from '../reducers/index';
 import { TrackWithMeta } from '../reducers/selectors';
 import { Dispatch, Playlist } from '../types/index';
@@ -35,7 +33,6 @@ interface DispatchProps {
 interface State {
   playlistCount: number;
   expanded: number[];
-  createOptionsActive: boolean;
 }
 
 type Props = StateProps & DispatchProps;
@@ -44,17 +41,18 @@ export class PlaylistView extends React.Component<Props, State> {
   state: State = {
     playlistCount: 1,
     expanded: [],
-    createOptionsActive: false,
   };
 
   increment = () =>
     this.setState(state => ({
       playlistCount: state.playlistCount + 1,
     }));
+
   decrement = () =>
     this.setState(state => ({
       playlistCount: state.playlistCount - 1,
     }));
+
   toggleExpanded = (clicked: number) =>
     this.setState(state => {
       const newState = state.expanded.includes(clicked)
@@ -62,11 +60,6 @@ export class PlaylistView extends React.Component<Props, State> {
         : state.expanded.concat(clicked);
       return { expanded: newState };
     });
-
-  toggleCreateOptions = () =>
-    this.setState(state => ({
-      createOptionsActive: !state.createOptionsActive,
-    }));
 
   render() {
     const {
@@ -79,7 +72,7 @@ export class PlaylistView extends React.Component<Props, State> {
       scrambleTracks,
     } = this.props;
 
-    const { playlistCount, expanded, createOptionsActive } = this.state;
+    const { playlistCount, expanded } = this.state;
     if (!tracks) {
       return <p>No tracks</p>;
     }
@@ -89,8 +82,6 @@ export class PlaylistView extends React.Component<Props, State> {
         : chunkArray(tracks, playlistCount);
 
     const isSplit = splitTracks.length > 1;
-
-    const createDisabled = playlistCount === 1 && !isScrambled;
 
     return (
       <div>
@@ -109,68 +100,17 @@ export class PlaylistView extends React.Component<Props, State> {
                 {getTotalPlayTime(tracks)}
               </span>}
           </p>
-          <div className="field has-addons">
-            <div className="control">
-              <button
-                disabled={isPending}
-                className="button"
-                onClick={scrambleTracks}
-              >
-                <span className="icon">
-                  <Icon type="shuffle" />
-                </span>
-                <span>Scramble</span>
-              </button>
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <button
-                className="button is-primary"
-                disabled={isPending}
-                onClick={() => playTracks(splitTracks[0].map(t => t.track.uri))}
-              >
-                <span className="icon">
-                  <Icon type="play" color="#fff" className="ps-space-r" />
-                </span>
-                <span>Play as queue</span>
-              </button>
-            </div>
-          </div>
-          <div className="field has-addons">
-            <div className="control">
-              <button
-                className="button is-primary"
-                disabled={isPending || createDisabled}
-                onClick={() => createPlaylists(splitTracks)}
-              >
-                <span className="icon">
-                  <Icon type="playlistAdd" />
-                </span>{' '}
-                <span>Create playlist(s)</span>
-              </button>
-            </div>
-            <div className="control">
-              <button
-                className={classNames('button', {
-                  'is-active': createOptionsActive,
-                })}
-                onClick={this.toggleCreateOptions}
-              >
-                <Icon type="options" />
-              </button>
-            </div>
-          </div>
-
-          {createOptionsActive &&
-            <CreatePlaylistOptions
-              disabled={isPending}
-              outputCount={playlistCount}
-              increment={this.increment}
-              decrement={this.decrement}
-              min={1}
-              max={tracks.length / 5}
-            />}
+          <PlaylistActions
+            isPending={isPending}
+            isScrambled={isScrambled}
+            playlistCount={playlistCount}
+            createPlaylists={() => createPlaylists(splitTracks)}
+            playTracks={() => playTracks(tracks.map(t => t.track.uri))}
+            scrambleTracks={scrambleTracks}
+            increment={this.increment}
+            decrement={this.decrement}
+            maxPlaylists={tracks.length / 5}
+          />
         </div>
         {splitTracks.map((newTrackList, i) =>
           <TrackTable
