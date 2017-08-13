@@ -1,15 +1,16 @@
 import { call, Effect, put, select, takeLatest } from 'redux-saga/effects';
 import {
+  CreatePlaylistsAction,
+  DeletePlaylistsAction,
   playlistCreated,
   playlistDeleteError,
   receivePlaylists,
-  unauthorized,
+  unauthorized
 } from '../actions/index';
 import * as Spotify from '../api/spotifyAPI';
 import * as Select from '../reducers/selectors';
 import { chunkArray } from '../util/chunkArray';
 
-import { CreatePlaylistsAction, DeletePlaylistsAction } from '../actions/index';
 import { isApiError } from '../api/helpers';
 import { AddTracksRes, ApiError, SimplePlaylist, User } from '../types/spotify';
 

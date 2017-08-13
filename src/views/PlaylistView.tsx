@@ -6,11 +6,9 @@ import { TrackTable } from '../components/TrackTable';
 import * as Select from '../reducers/selectors';
 import { getTotalPlayTime } from '../util/helpers';
 
-import { Action } from '../actions/index';
 import { playTracks } from '../api/spotifyAPI';
 import { PlaylistActions } from '../components/PlaylistActions';
 import { AppState } from '../reducers/index';
-import { TrackWithMeta } from '../reducers/selectors';
 import { Dispatch, Playlist } from '../types/index';
 import { chunkArray } from '../util/chunkArray';
 
@@ -21,13 +19,13 @@ interface OwnProps {
 
 type StateProps = {
   isPending: boolean;
-  tracks: TrackWithMeta[];
+  tracks: Select.TrackWithMeta[];
   isScrambled: boolean;
 } & OwnProps;
 
 interface DispatchProps {
-  scrambleTracks: () => Action;
-  createPlaylists: (splitTracks: TrackWithMeta[][]) => Action;
+  scrambleTracks: () => Actions.Action;
+  createPlaylists: (splitTracks: Select.TrackWithMeta[][]) => Actions.Action;
 }
 
 interface State {

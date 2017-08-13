@@ -1,9 +1,8 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { unauthorized } from '../actions/index';
+import { FetchTracksAction, unauthorized } from '../actions/index';
 import * as Spotify from '../api/spotifyAPI';
 
 import { Effect } from 'redux-saga';
-import { FetchTracksAction } from '../actions/index';
 import { AppState } from '../reducers/index';
 import { Playlist } from '../types/index';
 

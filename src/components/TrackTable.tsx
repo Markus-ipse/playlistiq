@@ -1,7 +1,6 @@
 import * as classNames from 'classnames';
 import { format } from 'date-fns';
 import * as React from 'react';
-import { MouseEvent } from 'react';
 
 import scrollIntoView from 'scroll-into-view';
 import { getTotalPlayTime } from '../util/helpers';
@@ -31,7 +30,7 @@ export function TrackTable({
 }: Props) {
   const activeOrSingle = isActive || partNumber === null;
 
-  const clickHandler = (e: MouseEvent<HTMLElement>) => {
+  const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
     const elem = e.currentTarget;
     if (!isActive && elem instanceof HTMLElement) {
       window.setTimeout(

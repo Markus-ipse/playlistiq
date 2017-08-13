@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { MouseEvent } from 'react';
 import { Icon } from './Icon';
 
-const stopPropagation = (e: MouseEvent<HTMLAnchorElement>) =>
+const stopPropagation = (e: React.MouseEvent<HTMLAnchorElement>) =>
   e.stopPropagation();
 
 interface Props {
