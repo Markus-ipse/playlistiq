@@ -5,10 +5,10 @@
     "target": "es5",
     "lib": ["dom", "es2017"],
     "sourceMap": true,
-    "allowJs": false,
+    "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": ".",
+    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -18,12 +18,12 @@
     "noUnusedLocals": true
   },
   "exclude": [
-    "../node_modules",
+    "node_modules",
     "build",
     "scripts",
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests"
   ]
 }
