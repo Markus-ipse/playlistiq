@@ -1,4 +1,3 @@
-import 'core-js/es6/array';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -11,6 +10,7 @@ import './index.css';
 
 import App from './App';
 import { AppState, appStateReducers } from './reducers/index';
+import registerServiceWorker from './registerServiceWorker';
 import { rootSaga } from './sagas/index';
 
 const rootReducer = combineReducers<AppState>(appStateReducers);
@@ -30,3 +30,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
+registerServiceWorker();
