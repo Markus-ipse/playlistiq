@@ -114,6 +114,9 @@ function spotifyReq(url: string, options: RequestInit = {}) {
         localStorage.removeItem(tokenKey);
       }
       return data;
+    }).catch(error => {
+      console.log('Request failure:', error);
+      return { error }
     });
 }
 
