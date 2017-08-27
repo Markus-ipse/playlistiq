@@ -51,7 +51,7 @@ export function TrackTable({
   });
 
   return (
-    <div className="playlist">
+    <div className="playlist ps-fadeIn-up">
       {partNumber &&
         <div className={headerClasses} onClick={clickHandler}>
           Pt. {partNumber} ({tracks.length} songs, {getTotalPlayTime(tracks)})

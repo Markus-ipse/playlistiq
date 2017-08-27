@@ -1,0 +1,77 @@
+
+@keyframes grow {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.ps-grow {
+  transform: scale(0);
+  animation-name: grow;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ps-fadeIn-left {
+  animation-name: fadeInLeft;
+  animation-duration: 1000ms;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ps-fadeIn-up {
+  animation-name: fadeInUp;
+  animation-duration: 1000ms;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -1vh, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ps-fadeIn-down {
+  animation-name: fadeInDown;
+  animation-duration: 1000ms;
+  animation-fill-mode: both;
+}
+
+.ps-delay-1 {
+  animation-delay: 300ms;
+}
+.ps-delay-2 {
+  animation-delay: 600ms;
+}

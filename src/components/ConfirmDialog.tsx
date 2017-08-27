@@ -29,7 +29,7 @@ const ConfirmDialog = ({
       <section className="modal-card-body">
         {children}
       </section>
-      <footer className="modal-card-foot ps-justify-content-end">
+      <footer className="modal-card-foot ps-justifyContent-end">
         <button className="button" onClick={onCancel}>
           {cancelText}
         </button>

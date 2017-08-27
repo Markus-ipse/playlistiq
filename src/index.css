@@ -1,3 +1,5 @@
+@import 'animations.css';
+
 html,
 body {
   max-width: 100%;
@@ -77,11 +79,11 @@ table.ps-no-wrap th {
 
 /****** Flex ******/
 
-.ps-justify-content-end {
+.ps-justifyContent-end {
   justify-content: flex-end;
 }
 
-.ps-align-self-end {
+.ps-alignSelf-end {
   align-self: flex-end !important;
 }
 

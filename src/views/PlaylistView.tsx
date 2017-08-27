@@ -71,7 +71,7 @@ export class PlaylistView extends React.Component<Props, State> {
     } = this.props;
 
     const { playlistCount, expanded } = this.state;
-    if (!tracks) {
+    if (!isPending && (!tracks || tracks.length === 0)) {
       return <p>No tracks</p>;
     }
     const splitTracks =
@@ -83,14 +83,17 @@ export class PlaylistView extends React.Component<Props, State> {
 
     return (
       <div>
-        <button className="button" onClick={handleBackClick}>
+        <button
+          className="button ps-fadeIn-down ps-delay-2"
+          onClick={handleBackClick}
+        >
           Back to playlists
         </button>
         <div className="ps-m">
-          <h2 className="title">
+          <h2 className="title ps-fadeIn-left">
             {playlist.name}
           </h2>
-          <p className="subtitle">
+          <p className="subtitle ps-fadeIn-up ps-delay-1">
             {playlist.tracks.total} songs
             {!isPending &&
               <span>

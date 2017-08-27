@@ -46,7 +46,7 @@ export class PlaylistActions extends React.Component<Props, State> {
     const createDisabled = playlistCount === 1 && !isScrambled;
 
     return (
-      <div>
+      <div className="ps-fadeIn-up ps-delay-1">
         <div className="field has-addons">
           <div className="control">
             <button
