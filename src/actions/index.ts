@@ -12,9 +12,10 @@ export interface FetchTracksAction {
   type: 'FETCH_TRACKS_REQ';
   playlist: Playlist;
 }
-export interface FetchTracksResAction {
-  type: 'FETCH_TRACKS_RES';
-  pagedTracks: Paging<PlaylistTrack>;
+
+export interface AllTracksReceivedAction {
+  type: 'ALL_TRACKS_RECEIVED';
+  playlistTracks: PlaylistTrack[];
   playlistId: string;
 }
 
@@ -75,7 +76,7 @@ export type Action =
   | FetchPlaylistsAction
   | ReceivePlaylistsAction
   | FetchTracksAction
-  | FetchTracksResAction
+  | AllTracksReceivedAction
   | CreatePlaylistsAction
   | PlaylistCreatedAction
   | DeletePlaylistsAction
@@ -99,6 +100,15 @@ export const fetchPlaylists = (): FetchPlaylistsAction => ({
 export const fetchTracks = (playlist: Playlist): FetchTracksAction => ({
   type: 'FETCH_TRACKS_REQ',
   playlist,
+});
+
+export const receiveTracks = (
+  playlistId: string,
+  playlistTracks: PlaylistTrack[],
+): AllTracksReceivedAction => ({
+  type: 'ALL_TRACKS_RECEIVED',
+  playlistTracks,
+  playlistId,
 });
 
 export const scrambleTracks = (playlist: Playlist): ScrambleTracksAction => ({

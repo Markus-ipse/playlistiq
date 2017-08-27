@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { Action } from '../actions/index';
-import { Paging, PlaylistTrack, Track, User } from '../types/spotify';
+import { Track, User } from '../types/spotify';
+import { toMap } from '../util/arrayToMap';
 import { shuffle } from '../util/shuffle';
 
 export interface TrackMeta {
@@ -12,10 +13,8 @@ export interface TrackMeta {
 
 export interface PagesState {
   [key: string]: {
+    isPending: boolean;
     tracks: TrackMeta[];
-    total?: number;
-    next?: string;
-    lastOffset?: number;
     newOrder?: TrackMeta[];
   };
 }
@@ -31,13 +30,14 @@ export interface TracksState {
 
 function entities(state: EntitiesState = {}, action: Action) {
   switch (action.type) {
-    case 'FETCH_TRACKS_RES': {
-      const pagedTracks: Paging<PlaylistTrack> = action.pagedTracks;
-      const newTracks = pagedTracks.items.reduce((idMap, item) => {
-        return { ...idMap, [item.track.id]: item.track };
-      }, {});
+    case 'ALL_TRACKS_RECEIVED': {
+      const tracksById = toMap(
+        'track.id',
+        item => item.track,
+        action.playlistTracks,
+      );
 
-      return { ...state, ...newTracks };
+      return { ...state, ...tracksById };
     }
 
     default:
@@ -47,50 +47,38 @@ function entities(state: EntitiesState = {}, action: Action) {
 
 let idx = 0;
 
-const updateTracks = (tracks: TrackMeta[], items: PlaylistTrack[]) => {
-  return (tracks || []).concat(
-    items.map(item => ({
-      trackId: item.track.id,
-      id: idx++,
-      addedAt: item.added_at,
-      addedBy: item.added_by,
-    })),
-  );
-};
-
 function pages(state: PagesState = {}, action: Action) {
   switch (action.type) {
     case 'FETCH_TRACKS_REQ': {
-      const currentPl = state[action.playlist.id];
+      if (state[action.playlist.id]) return state;
 
       return {
         ...state,
         [action.playlist.id]: {
-          ...currentPl,
+          isPending: true,
         },
       };
     }
 
-    case 'FETCH_TRACKS_RES': {
-      const { total, items, offset, next } = action.pagedTracks;
-
-      const playlistPaging = state[action.playlistId];
-
+    case 'ALL_TRACKS_RECEIVED': {
       return {
         ...state,
         [action.playlistId]: {
-          ...playlistPaging,
-          total,
-          next,
-          lastOffset: offset,
-          tracks: updateTracks(playlistPaging.tracks, items),
+          isPending: false,
+          tracks: action.playlistTracks.map(item => ({
+              trackId: item.track.id,
+              id: idx++, // Fixme: impure
+              addedAt: item.added_at,
+              addedBy: item.added_by,
+            }),
+          ),
         },
       };
     }
 
     case 'SCRAMBLE_TRACKS': {
       const currentPlayList = state[action.playlist.id];
-      const newOrder = shuffle(currentPlayList.tracks);
+      const newOrder = shuffle(currentPlayList.tracks); // Fixme: impure :(
       const newPlayList = {
         ...currentPlayList,
         newOrder,

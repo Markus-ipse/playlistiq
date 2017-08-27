@@ -12,7 +12,7 @@ export interface TrackWithMeta {
 
 const emptyArr: TrackWithMeta[] = [];
 
-const playlistTrackPages = (state: AppState, playlistId: string) =>
+export const playlistTrackPages = (state: AppState, playlistId: string) =>
   state.tracks.pages[playlistId];
 
 export const playlistTrackIds = (state: AppState, playlistId: string) => {
@@ -62,7 +62,7 @@ export const playlists = (state: AppState): Playlist[] =>
     });
 
 export const tracksPending = (state: AppState, playlistId: string) =>
-  playlistTrackPages(state, playlistId).next !== null;
+  playlistTrackPages(state, playlistId).isPending;
 
 export const user = (state: AppState) =>
   state.user.data ? state.user.data : null;

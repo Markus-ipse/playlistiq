@@ -1,10 +1,21 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { FetchTracksAction, unauthorized } from '../actions/index';
-import * as Spotify from '../api/spotifyAPI';
-
 import { Effect } from 'redux-saga';
-import { AppState } from '../reducers/index';
+import {
+  call,
+  put,
+  select,
+  takeLatest,
+} from 'redux-saga/effects';
+import {
+  FetchTracksAction,
+  receiveTracks,
+  unauthorized,
+} from '../actions/index';
+import * as Spotify from '../api/spotifyAPI';
+import * as Select from '../reducers/selectors';
+
+import { isApiError } from '../api/helpers';
 import { Playlist } from '../types/index';
+import { Paging, PlaylistTrack } from '../types/spotify';
 
 function* fetchPlaylistTracks({
   playlist,
@@ -13,27 +24,23 @@ function* fetchPlaylistTracks({
   offset: number;
   playlist: Playlist;
 }): IterableIterator<Effect> {
-  const res = yield call(
+  const res: Paging<PlaylistTrack> = yield call(
     Spotify.getPlaylistTracks,
     playlist.owner.id,
     playlist.id,
     offset,
   );
 
-  if (res.error) {
+  if (isApiError(res)) {
     const { error } = res;
     if (error.status === 401) {
       yield put(unauthorized(error.message));
     } else {
       console.error('Failed to fetch tracks:', error);
     }
-  } else {
-    yield put({
-      type: 'FETCH_TRACKS_RES',
-      pagedTracks: res,
-      playlistId: playlist.id,
-    });
   }
+
+  return res;
 }
 
 const SPOTIFY_PAGING_SIZE = 100;
@@ -41,22 +48,26 @@ const SPOTIFY_PAGING_SIZE = 100;
 function* fetchTracks({
   playlist,
 }: FetchTracksAction): IterableIterator<Effect> {
-  yield call(fetchPlaylistTracks, { playlist, offset: 0 });
+  const pl = yield select(Select.playlistTrackPages, playlist.id);
 
-  const playlistTracks = yield select(
-    (state: AppState) => state.tracks.pages[playlist.id],
-  );
+  if (pl && pl.tracks) return;
 
-  if (playlistTracks && playlistTracks.next) {
-    let nextOffset = playlistTracks.lastOffset || 0;
-    do {
-      nextOffset += SPOTIFY_PAGING_SIZE;
-      yield call(fetchPlaylistTracks, {
-        playlist,
-        offset: nextOffset,
-      });
-    } while (nextOffset < playlistTracks.total);
-  }
+  const playlistTracks: PlaylistTrack[] = [];
+
+  let playlistTrackPaging;
+  let nextOffset = 0;
+  do {
+    playlistTrackPaging = yield call(fetchPlaylistTracks, {
+      playlist,
+      offset: nextOffset,
+    });
+
+    playlistTracks.push(...playlistTrackPaging.items);
+
+    nextOffset += SPOTIFY_PAGING_SIZE;
+  } while (!isApiError(playlistTrackPaging) && playlistTrackPaging.next);
+
+  yield put(receiveTracks(playlist.id, playlistTracks));
 }
 
 export function* tracksSaga(): IterableIterator<Effect> {
